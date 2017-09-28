@@ -74,8 +74,8 @@
               <el-table-column
                 label="应收金额-日期" width="150">
                 <template scope="scope">
-                  {{scope.row.periodDetailVo.periodPayment}}
-                  <small v-if="coModelType==30">-{{scope.row.periodDetailVo.periodStartDate}}</small>
+                  {{scope.row.planDetailVo.planAmount}}
+                  <small v-if="coModelType==30">-{{scope.row.planDetailVo.planStartDate}}</small>
                 </template>
               </el-table-column>
               <el-table-column

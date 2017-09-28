@@ -11,13 +11,14 @@
               <el-col :span="4"><el-input v-model="driverName" placeholder="司机姓名"></el-input></el-col>
               <el-col :span="4"><el-input v-model="phoneNum" placeholder="司机手机"></el-input></el-col>
               <el-col :span="4"><el-select clearable v-model="driverStatus" placeholder="司机状态">
-                <el-option label="正常运营" value="2"></el-option>
-                <el-option label="解除合作" value="3"></el-option>
+                <el-option label="正常运营" value="1"></el-option>
+                <el-option label="合作结束" value="2"></el-option>
               </el-select></el-col>
               <el-col :span="4"><el-select clearable v-model="coModelType" placeholder="合作模式">
                 <el-option label="租赁" value="20"></el-option>
                 <el-option label="租购月供" value="30"></el-option>
                 <el-option label="租购周供" value="40"></el-option>
+                <el-option label="全款" value="10"></el-option>
               </el-select></el-col>
             </el-row>
             <el-row :gutter="20">
@@ -61,16 +62,19 @@
               </el-table-column>
               <el-table-column
                 label="合作模式"
-                width="150">
+                width="130">
                 <template scope="scope">
                   <span style="margin-left: 10px">{{ scope.row.coModelType }}</span>
                 </template>
               </el-table-column>
               <el-table-column
-                label="运营状态"
+                label="司机状态"
                 width="100">
                 <template scope="scope">
-                  <span><el-tag type="success">{{scope.row.driverStatus}}</el-tag></span>
+                  <span>
+                    <el-tag v-if="scope.row.driverStatus=='正常运营'" type="success">{{scope.row.driverStatus}}</el-tag>
+                    <el-tag v-if="scope.row.driverStatus=='合作结束'" type="warning">{{scope.row.driverStatus}}</el-tag>
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column label="车牌号-车型" width="250">
@@ -78,7 +82,7 @@
                   <span style="margin-left: 10px"><el-tag>{{ scope.row.plateNum }}-{{scope.row.carName}}</el-tag></span>
                 </template>
               </el-table-column>
-              <el-table-column label="加入时间" width="150">
+              <el-table-column label="加入时间" width="130">
                 <template scope="scope">
                   <span style="margin-left: 10px">{{ scope.row.periodStartDate }}</span>
                 </template>
