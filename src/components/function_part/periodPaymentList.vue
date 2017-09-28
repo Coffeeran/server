@@ -72,10 +72,11 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="应收金额-日期" width="150">
+                label="应收金额-日期" width="150"
+                >
                 <template scope="scope">
                   {{scope.row.planDetailVo.planAmount}}
-                  <small v-if="coModelType==30">-{{scope.row.planDetailVo.planStartDate}}</small>
+                  <!--<small v-if="coModelType==30">&#45;&#45;{{scope.row.planDetailVo.planStartDate}}</small>-->
                 </template>
               </el-table-column>
               <el-table-column
@@ -97,8 +98,8 @@
               <el-table-column
                 label="付款状态">
                 <template scope="scope">
-                  <el-icon v-if="scope.row.periodDetailVo.periodPayment-scope.row.payment>0" name="close"></el-icon>
-                  <el-icon v-if="scope.row.periodDetailVo.periodPayment-scope.row.payment<=0" name="check"></el-icon>
+                  <el-icon v-if="scope.row.planDetailVo.planAmount-scope.row.payment>0" name="close"></el-icon>
+                  <el-icon v-if="scope.row.planDetailVo.planAmount-scope.row.payment<=0" name="check"></el-icon>
                 </template>
               </el-table-column>
               <el-table-column
