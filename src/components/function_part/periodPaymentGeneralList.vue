@@ -232,7 +232,7 @@
       dateInitial () {
         this.endDate = new Date()
         this.startDate = new Date()
-        this.startDate.setTime(this.startDate.getTime() - 3600 * 1000 * 24 * 7 * 4)
+        this.startDate.setTime(this.startDate.getTime() - 3600 * 1000 * 24 * 7 * 5)
       }
     },
     watch: {
