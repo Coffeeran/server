@@ -52,7 +52,7 @@
                   <h2>司机信息-{{driverInfo.driverName}}</h2>
                 </div>
                 <dl class="dl-horizontal">
-                  <dt>状态:</dt> <dd><el-tag type="success">{{driverInfo.operationStatus}}</el-tag></dd>
+                  <dt>状态:</dt> <dd><el-tag type="success">{{driverInfo.driverStatus}}</el-tag></dd>
                 </dl>
               </div>
             </div>
