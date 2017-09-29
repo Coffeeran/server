@@ -4,7 +4,7 @@
       <div class="col-sm-12">
         <div class="ibox float-e-margins" style="margin-bottom: 0px">
           <div class="ibox-title">
-            订单管理
+            司机列表
           </div>
           <div class="ibox-content" style="padding-bottom: 10px">
             <el-row :gutter="10">
@@ -20,6 +20,11 @@
                 <el-option label="租购周供" value="40"></el-option>
                 <el-option label="全款" value="10"></el-option>
               </el-select></el-col>
+              <el-col :span="4"><el-select clearable v-model="orderBy" placeholder="排序方式">
+                <el-option label="违章扣分" value="score"></el-option>
+                <el-option label="违章罚金" value="money"></el-option>
+              </el-select>
+              </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :offset="19" :span="5">
@@ -62,7 +67,7 @@
               </el-table-column>
               <el-table-column
                 label="合作模式"
-                width="130">
+                width="120">
                 <template scope="scope">
                   <span style="margin-left: 10px">{{ scope.row.coModelType }}</span>
                 </template>
@@ -82,19 +87,19 @@
                   <span style="margin-left: 10px"><el-tag>{{ scope.row.plateNum }}-{{scope.row.carName}}</el-tag></span>
                 </template>
               </el-table-column>
-              <el-table-column label="加入时间" width="130">
+              <el-table-column label="加入时间" width="140">
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.periodStartDate }}</span>
+                  <small style="margin-left: 10px">{{ scope.row.periodStartDate }}</small>
                 </template>
               </el-table-column>
               <el-table-column label="违章扣分">
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.ticketScore}}</span>
+                  <small style="margin-left: 10px">{{ scope.row.ticketScore}}</small>
                 </template>
               </el-table-column>
               <el-table-column label="违章罚款">
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.ticketMoney }}</span>
+                  <small  style="margin-left: 10px">{{ scope.row.ticketMoney }}</small>
                 </template>
               </el-table-column>
             </el-table>
@@ -125,6 +130,7 @@ export default {
       pageSize: 10,
       activeName: 'first',
       driverName: '',
+      orderBy: '',
       phoneNum: '',
       driverStatus: '',
       coModelType: '',
