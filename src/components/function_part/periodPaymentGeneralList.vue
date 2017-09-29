@@ -124,7 +124,7 @@
               </el-table-column>
               <el-table-column
                 prop="driverNoReceivable"
-                label="应收司机" width="100">
+                label="未收司机" width="100">
               </el-table-column>
               <el-table-column
                 prop="driverNoReceived"

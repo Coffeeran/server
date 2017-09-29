@@ -36,7 +36,7 @@
             <el-row :gutter="20">
               <el-col :offset="19" :span="5">
                 <el-button  icon="search" size="mid" @click="query">查询</el-button>
-                <el-button :plain="true" type="warning" icon="delete2" size="mid">重置</el-button>
+                <el-button :plain="true" type="warning" icon="share" size="mid" @click="exportCsv">导出数据</el-button>
               </el-col>
             </el-row>
           </div>
@@ -51,8 +51,10 @@
               v-loading.body="isLoading"
               :data="tableData"
               border
-              style="width: 100%">
+              style="width: 100%"
+              ref="table">
               <el-table-column
+                prop="driverName"
                 label="司机姓名"
                 width="100">
                 <template scope="scope">
@@ -72,10 +74,11 @@
                 </template>
               </el-table-column>
               <el-table-column
+                prop="dueAmount"
                 label="应收金额-日期" width="150"
                 >
                 <template scope="scope">
-                  {{scope.row.planDetailVo.planAmount}}
+                  {{scope.row.dueAmount}}
                   <!--<small v-if="coModelType==30">&#45;&#45;{{scope.row.planDetailVo.planStartDate}}</small>-->
                 </template>
               </el-table-column>
@@ -98,8 +101,8 @@
               <el-table-column
                 label="付款状态">
                 <template scope="scope">
-                  <el-icon v-if="scope.row.planDetailVo.planAmount-scope.row.payment>0" name="close"></el-icon>
-                  <el-icon v-if="scope.row.planDetailVo.planAmount-scope.row.payment<=0" name="check"></el-icon>
+                  <el-icon v-if="scope.row.dueAmount-scope.row.payment>0" name="close"></el-icon>
+                  <el-icon v-if="scope.row.dueAmount-scope.row.payment<=0" name="check"></el-icon>
                 </template>
               </el-table-column>
               <el-table-column
@@ -157,13 +160,14 @@
 
 <script>
   import axios from 'axios'
+  import CsvExport from '../../utils/CsvExport'
 
   export default {
     data () {
       return {
         dialogFormVisible: false,
-        dateType: 'week',
-        dateFormat: 'yyyy-MM-dd 第 WW 周',
+        dateType: '',
+        dateFormat: '',
         addDriverName: '',
         driverId: '',
         isLoading: false,
@@ -279,18 +283,28 @@
         }).then(function (res) {
           _this.paymentDetail = res.data.data
         })
-      }
-    },
-    watch: {
-      coModelType () {
-        this.dateType = 'month'
-        this.dateFormat = 'yyyy-MM'
+      },
+      exportCsv () {
+        let columns = this.$refs.table.$children.filter(t => t.prop != null)
+        const fields = columns.map(t => t.prop)
+        const fieldNames = columns.map(t => t.label)
+        CsvExport(this.tableData, fields, fieldNames, '列表')
       }
     },
     created: async function () {
       this.startDate = this.$route.params.date
       this.form.payTime = this.$route.params.date
       this.coModelType = this.$route.params.co_model_type
+      //  todo list日期显示格式
+      if (this.coModelType === '30') {
+        this.dateType = 'month'
+        this.dateFormat = 'yyyy - MM'
+      } else if (this.coModelType === '40') {
+        this.dateType = 'week'
+        this.dateFormat = 'yyyy-MM-dd 第 WW 周'
+      }
+      this.dateType = 'month'
+      this.dateFormat = 'yyyy-MM'
       await this.login()
       this.fetchData()
     }

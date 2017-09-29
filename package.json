@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "element-ui": "^1.4.1",
+    "json2csv": "^3.11.2",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "vue": "^2.3.3",
