@@ -18,8 +18,7 @@
     "sass-loader": "^6.0.6",
     "vue": "^2.3.3",
     "vue-good-wizard": "^1.1.2",
-    "vue-router": "^2.6.0",
-    "vue-switches": "^1.1.7"
+    "vue-router": "^2.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

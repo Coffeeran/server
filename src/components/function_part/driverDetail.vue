@@ -52,7 +52,10 @@
                   <h2>司机信息-{{driverInfo.driverName}}</h2>
                 </div>
                 <dl class="dl-horizontal">
-                  <dt>状态:</dt> <dd><el-tag type="success">{{driverInfo.driverStatus}}</el-tag></dd>
+                  <dt>状态:</dt> <dd>
+                  <el-tag v-if="driverInfo.driverStatus=='正常运营'" type="primary">{{driverInfo.driverStatus}}</el-tag>
+                  <el-tag v-if="driverInfo.driverStatus=='合作结束'" type="danger">{{driverInfo.driverStatus}}</el-tag>
+                  </dd>
                 </dl>
               </div>
             </div>
@@ -145,15 +148,15 @@
                           <tr>
                             <th>序号</th>
                             <th>日期</th>
-                            <th>状态</th>
                             <th>应收金额</th>
                             <th>已收金额</th>
+                            <th>状态</th>
                             <th>备注</th>
                             <th>操作</th>
                           </tr>
                           </thead>
-                          <tbody v-for="(item1,index1) in totalPayment">
-                          <tr v-for="(item2,index2) in item1.paymentDetailVoList">
+                          <tbody>
+                          <tr v-for="(item1,index1) in totalPayment">
                             <td>
                               第{{index1+1}}周期
                             </td>
@@ -161,20 +164,25 @@
                               {{item1.dueDate}}
                             </td>
                             <td>
-                              <el-tag type="success" v-if="item2.payment>0">{{item2.payment}}</el-tag>
-                              <el-tag type="danger" v-if="item2.payment==0">-</el-tag>
+                              <el-tag>{{item1.dueAmount}}</el-tag>
                             </td>
                             <td>
-                              {{item2.updateTime}}
+                              <p v-for="item2 in item1.paymentDetailVoList">
+                                <el-tag v-if="item2.paymentStatus=='正常已付'" type="primary">{{item2.payment}}<small>{{item2.paymentStatus}}</small></el-tag>
+                                <el-tag v-if="item2.paymentStatus=='逾期已付'" type="warning">{{item2.payment}}<small>{{item2.paymentStatus}}</small></el-tag>
+                              </p>
                             </td>
                             <td>
-                              {{item2.paymentPlatform}}
+                              <el-tag type="success" v-if="item1.status=='当期结清'">{{item1.status}}</el-tag>
+                              <el-tag type="danger" v-if="item1.status=='当期未结清'">{{item1.status}}</el-tag>
                             </td>
                             <td>
-                              {{item2.comment}}
+                              <!--{{item2.comment}}-->
                             </td>
                             <td>
-                              <el-button type="primary" size="small">修改</el-button>
+                              <p v-for="item2 in item1.paymentDetailVoList">
+                              <el-button :plain="true" type="primary" size="small">修改</el-button>
+                              </p>
                             </td>
                           </tr>
                           </tbody>

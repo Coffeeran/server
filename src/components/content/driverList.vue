@@ -23,15 +23,18 @@
               <el-col :span="4"><el-select clearable v-model="orderBy" placeholder="排序方式">
                 <el-option label="违章扣分" value="score"></el-option>
                 <el-option label="违章罚金" value="money"></el-option>
+                <el-option label="加入时间" value="startDate"></el-option>
               </el-select>
               </el-col>
             </el-row>
-            <el-row :gutter="20">
-              <el-col :offset="19" :span="5">
-                <el-button  icon="search" size="large" @click="query">查询</el-button>
-                <el-button :plain="true" type="warning" icon="delete2" size="large">重置</el-button>
-              </el-col>
+            <el-row :gutter="10">
+              <el-col :span="4"><el-input v-model="plateNum" placeholder="车牌号码"></el-input></el-col>
             </el-row>
+          </div>
+          <div class="ibox-footer">
+            <el-button  icon="search" size="small" @click="query">查询</el-button>
+            <el-button :plain="true" type="warning" icon="delete2" size="small">重置</el-button>
+            <el-button type="info" size="small" class="pull-right" >新增司机<el-icon name="plus"></el-icon></el-button>
           </div>
         </div>
       </div>
@@ -50,7 +53,8 @@
               v-loading.body="isLoading"
               :data="tableData"
               border
-              style="width: 100%">
+              style="width: 100%"
+              :stripe="true">
               <el-table-column
                 label="司机姓名"
                 width="100">
@@ -69,7 +73,7 @@
                 label="合作模式"
                 width="120">
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.coModelType }}</span>
+                  <small >{{ scope.row.coModelType }}</small>
                 </template>
               </el-table-column>
               <el-table-column
@@ -77,8 +81,8 @@
                 width="100">
                 <template scope="scope">
                   <span>
-                    <el-tag v-if="scope.row.driverStatus=='正常运营'" type="success">{{scope.row.driverStatus}}</el-tag>
-                    <el-tag v-if="scope.row.driverStatus=='合作结束'" type="warning">{{scope.row.driverStatus}}</el-tag>
+                    <el-tag v-if="scope.row.driverStatus=='正常运营'" type="primary">{{scope.row.driverStatus}}</el-tag>
+                    <el-tag v-if="scope.row.driverStatus=='合作结束'" type="danger">{{scope.row.driverStatus}}</el-tag>
                   </span>
                 </template>
               </el-table-column>
@@ -92,14 +96,16 @@
                   <small style="margin-left: 10px">{{ scope.row.periodStartDate }}</small>
                 </template>
               </el-table-column>
-              <el-table-column label="违章扣分">
+              <el-table-column label="违章情况">
                 <template scope="scope">
-                  <small style="margin-left: 10px">{{ scope.row.ticketScore}}</small>
+                  <small style="margin-left: 10px">{{ scope.row.ticket}}</small>
                 </template>
               </el-table-column>
-              <el-table-column label="违章罚款">
+              <el-table-column label="操作"
+                               fixed="right"
+              width="80">
                 <template scope="scope">
-                  <small  style="margin-left: 10px">{{ scope.row.ticketMoney }}</small>
+                  <el-button :plain="true" size="small" type="info">修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -129,6 +135,7 @@ export default {
       pageNum: 1,
       pageSize: 10,
       activeName: 'first',
+      plateNum: '',
       driverName: '',
       orderBy: '',
       phoneNum: '',
@@ -145,6 +152,7 @@ export default {
       axios.get('/api/manage/driver/list.do',
         {
           params: {
+            plateNum: this.plateNum,
             driverName: this.driverName,
             phoneNum: this.phoneNum,
             driverStatus: this.driverStatus,

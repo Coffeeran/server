@@ -15,7 +15,7 @@
                 <el-option label="已过户" value="2"></el-option>
                 <el-option label="库存中" value="0"></el-option>
               </el-select></el-col>
-              <el-col :span="4"><el-select clearable v-model="branch" placeholder="选择分支">
+              <el-col :span="4"><el-select clearable v-model="branch" placeholder="选择城市">
                 <el-option label="成都" value="1"></el-option>
                 <el-option label="昆明" value="2"></el-option>
               </el-select></el-col>
@@ -27,12 +27,17 @@
               </el-select>
               </el-col>
             </el-row>
-            <el-row :gutter="20">
-              <el-col :offset="19" :span="5">
-                <el-button  icon="search" size="large" @click="query">查询</el-button>
-                <el-button :plain="true" type="warning" icon="delete2" size="large">重置</el-button>
+            <el-row :gutter="10">
+              <el-col :span="4">
+                <el-input v-model="driverName" placeholder="司机姓名"></el-input>
+
               </el-col>
             </el-row>
+          </div>
+          <div class="ibox-footer">
+            <el-button  icon="search" size="small" @click="query">查询</el-button>
+            <el-button :plain="true" type="warning" icon="delete2" size="small">重置</el-button>
+            <el-button type="info" size="small" class="pull-right" >新增车辆<el-icon name="plus"></el-icon></el-button>
           </div>
         </div>
       </div>
@@ -51,26 +56,29 @@
               v-loading.body="isLoading"
               :data="tableData"
               border
-              style="width: 100%">
+              style="width: 100%"
+              :stripe="true">
               <el-table-column
                 label="车牌号"
-                width="110">
+                width="110"
+                fixed>
                 <template scope="scope">
                   <a @click="route(scope.row.carId)">{{ scope.row.plateNum }}</a>
                 </template>
               </el-table-column>
               <el-table-column
                 label="车辆型号"
-                width="220">
+                width="180"
+                >
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.carName }}</span>
+                  <el-tag >{{ scope.row.carName }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="车辆状态" width="100">
                 <template scope="scope">
                   <span>
-                    <el-tag v-if="scope.row.carStatus=='正常运营'" type="success">{{scope.row.carStatus}}</el-tag>
-                    <el-tag v-if="scope.row.carStatus=='已过户'" type="warning">{{scope.row.carStatus}}</el-tag>
+                    <el-tag v-if="scope.row.carStatus=='正常运营'" type="primary">{{scope.row.carStatus}}</el-tag>
+                    <el-tag v-if="scope.row.carStatus=='已过户'" type="danger">{{scope.row.carStatus}}</el-tag>
                   </span>
                 </template>
               </el-table-column>
@@ -83,7 +91,8 @@
               </el-table-column>
               <el-table-column
                 label="绑定司机"
-                width="150">
+                width="150"
+                align="center">
                 <template scope="scope">
                   <span v-for="item in scope.row.driverCarListVoList">
                   <el-tag v-if="item.driverStatus=='正常运营'" type="primary">{{ item.driverName }}</el-tag>
@@ -91,21 +100,37 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="提车日期" width="200">
+              <el-table-column label="提车日期" width="180">
                 <template scope="scope">
                   <span>
                     {{scope.row.pickDate}}
                   </span>
               </template>
               </el-table-column>
-              <el-table-column label="违章扣分" width="100">
+              <el-table-column label="违章情况" width="100">
                 <template scope="scope">
-                  <small >{{ scope.row.ticketScore}}</small>
+                  <small >{{ scope.row.ticket}}</small>
                 </template>
               </el-table-column>
-              <el-table-column label="违章罚款">
+              <el-table-column label="赎回日期" width="180">
                 <template scope="scope">
-                  <small style="margin-left: 10px">{{ scope.row.ticketMoney }}</small>
+                  <span>
+                    {{scope.row.pickDate}}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="过户日期" width="180">
+                <template scope="scope">
+                  <span>
+                    {{scope.row.pickDate}}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作"
+                               fixed="right"
+              width="80">
+                <template scope="scope">
+                  <el-button :plain="true" size="small" type="info">修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -133,6 +158,7 @@
       return {
         total: 5,
         pageNum: 1,
+        driverName: '',
         plateNum: '',
         pageSize: 10,
         activeName: 'first',
@@ -151,8 +177,10 @@
         axios.get('/api/manage/car/list.do',
           {
             params: {
+              plateNum: this.plateNum,
               branch: this.branch,
               carName: this.carName,
+              driverName: this.driverName,
               carStatus: this.carStatus,
               orderBy: this.orderBy,
               pageSize: this.pageSize,

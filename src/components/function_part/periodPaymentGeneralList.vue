@@ -35,10 +35,11 @@
                 </el-row>
               </el-col>
             </el-row>
-            <el-row :gutter="20">
-              <el-col :offset="19" :span="5">
-                <el-button  icon="search" size="mid" @click="query">查询</el-button>
-                <el-button :plain="true" type="warning" icon="delete2" size="mid">重置</el-button>
+          </div>
+          <div class="ibox-footer">
+            <el-row :gutter="20" style="margin-bottom: 0px;">
+              <el-col :span="3" >
+              <el-button  icon="search" size="small" @click="query">查询</el-button>
               </el-col>
             </el-row>
           </div>
@@ -109,7 +110,7 @@
                 <el-table-column
                   label="银行">
                   <template scope="scope">
-                    <el-tag style="color: #C1328E; border-color: #C1328E;" v-if="scope.row.bankReceived>0" type="warning" color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
+                    <el-tag style="color: #C1328E; border-color: #C1328E;" v-if="scope.row.bankReceived>0"  color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
@@ -124,11 +125,20 @@
               </el-table-column>
               <el-table-column
                 prop="driverNoReceivable"
-                label="未收司机" width="100">
+                label="未收人数" width="100">
               </el-table-column>
               <el-table-column
                 prop="driverNoReceived"
-                label="已收司机">
+                label="已收人数"
+                width="100">
+              </el-table-column>
+              <el-table-column
+                label="操作"
+                width="100"
+              fixed="right">
+                <template scope="scope">
+                  <el-button size="mini">查看收款</el-button>
+                </template>
               </el-table-column>
             </el-table>
             <el-pagination
@@ -246,5 +256,8 @@
 </script>
 
 <style>
+  .el-tabs__header {
+    margin: 0 0 0 0px;
+  }
 
 </style>

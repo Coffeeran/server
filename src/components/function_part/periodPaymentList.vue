@@ -33,12 +33,10 @@
                 </el-radio-group>
               </el-col>
             </el-row>
-            <el-row :gutter="20">
-              <el-col :offset="19" :span="5">
-                <el-button  icon="search" size="mid" @click="query">查询</el-button>
-                <el-button :plain="true" type="warning" icon="share" size="mid" @click="exportCsv">导出数据</el-button>
-              </el-col>
-            </el-row>
+          </div>
+          <div class="ibox-footer">
+                <el-button  icon="search" size="small" @click="query">查询</el-button>
+                <el-button :plain="true" type="warning" icon="share" size="small" @click="exportCsv">导出数据</el-button>
           </div>
         </div>
       </div>
