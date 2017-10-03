@@ -102,10 +102,9 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作"
-                               fixed="right"
-              width="80">
+              width="100">
                 <template scope="scope">
-                  <el-button :plain="true" size="small" type="info">修改</el-button>
+                  <el-button :plain="true" size="mini" type="info">资料修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -152,6 +151,7 @@ export default {
       axios.get('/api/manage/driver/list.do',
         {
           params: {
+            orderBy: this.orderBy,
             plateNum: this.plateNum,
             driverName: this.driverName,
             phoneNum: this.phoneNum,

@@ -115,13 +115,13 @@
                     </li>
 
                     <li>
-                      <span>违章扣分</span>
-                      <strong>{{driverInfo.ticketScore}}</strong>
+                      <span>违章情况</span>
+                      <strong>{{driverInfo.ticket}}</strong>
 
                     </li>
                     <li>
-                      <span>违章罚金</span>
-                      <strong>{{driverInfo.ticketMoney}}</strong>
+                      <span>逾期次数</span>
+                      <strong>{{driverInfo.overdueNum}}</strong>
                     </li>
                   </ul>
               </div>
@@ -168,8 +168,8 @@
                             </td>
                             <td>
                               <p v-for="item2 in item1.paymentDetailVoList">
-                                <el-tag v-if="item2.paymentStatus=='正常已付'" type="primary">{{item2.payment}}<small>{{item2.paymentStatus}}</small></el-tag>
-                                <el-tag v-if="item2.paymentStatus=='逾期已付'" type="warning">{{item2.payment}}<small>{{item2.paymentStatus}}</small></el-tag>
+                                <el-tag v-if="item2.paymentStatus=='正常已付'" type="primary">{{item2.payment}}<small>-{{item2.paymentStatus}}-{{item2.payer}}</small></el-tag>
+                                <el-tag v-if="item2.paymentStatus=='逾期已付'" type="warning">{{item2.payment}}<small>-{{item2.paymentStatus}}</small></el-tag>
                               </p>
                             </td>
                             <td>
