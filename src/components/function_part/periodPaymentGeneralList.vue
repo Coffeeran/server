@@ -14,6 +14,7 @@
                 <el-row :gutter="39">
                   <el-col :span="12">
                     <el-date-picker
+                      size="small"
                       v-model="startDate"
                       :type="datePicker.type"
                       :format="datePicker.format"
@@ -24,6 +25,7 @@
                   </el-col>
                   <el-col :span="12">
                     <el-date-picker
+                      size="small"
                       v-model="endDate"
                       :type="datePicker.type"
                       :format="datePicker.format"
@@ -199,12 +201,6 @@
         this.coModelType = tab.name
         this.fetchData()
       },
-      login: async function () {
-        return await axios.post('/api/user/login.do', {
-          username: 'admin',
-          password: '123'
-        })
-      },
       query () {
         this.pageNum = 1
         this.pageSize = 10
@@ -223,9 +219,13 @@
               pageNum: this.pageNum
             }
           }).then(function (res) {
-            _this.total = res.data.data.total
-            _this.tableData = res.data.data.list
-            _this.isLoading = false
+            if (res.data.status === 0) {
+              _this.total = res.data.data.total
+              _this.tableData = res.data.data.list
+              _this.isLoading = false
+            } else if (res.data.status === 10) {
+              _this.$router.push({name: 'login'})
+            }
           })
       },
       handleSizeChange (val) {
@@ -249,7 +249,6 @@
     },
     created: async function () {
       this.dateInitial()
-      await this.login()
       this.fetchData()
     }
   }

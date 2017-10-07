@@ -23,7 +23,7 @@
 
     <ul class="nav navbar-top-links navbar-right" style="margin-left:10%">
       <li>
-        <span class="m-r-sm text-muted welcome-message">壹栈在线管理平台</span>
+        <span class="m-r-sm text-muted welcome-message">{{name}}</span>
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -43,7 +43,7 @@
       </li>
 
       <li>
-        <a href="login.html">
+        <a @click="logout">
           <i class="fa fa-sign-out"></i> 注销
         </a>
       </li>
@@ -53,8 +53,28 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-
+  data () {
+    return {
+      name: ''
+    }
+  },
+  methods: {
+    getName () {
+      const _this = this
+      axios.post('/api/user/get_user_info.do').then(function (res) {
+        _this.name = res.data.data.name
+      })
+    },
+    logout () {
+      axios.post('/api/user/logout.do')
+      this.$router.push({name: 'login'})
+    }
+  },
+  created () {
+    this.getName()
+  }
 }
 </script>
 

@@ -94,12 +94,6 @@
       statusResult (status) {
         return status === '下架' ? 'danger' : 'success'
       },
-      login () {
-        axios.post('/api/user/login.do', {
-          username: 'admin',
-          password: '123'
-        })
-      },
       fetchData () {
         axios.get('/api/order/list.do')
       },
@@ -117,7 +111,6 @@
       }
     },
     mounted () {
-      this.login()
       this.fetchData()
     }
   }

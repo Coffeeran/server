@@ -223,12 +223,6 @@ export default {
     }
   },
   methods: {
-    login: async function () {
-      return await axios.post('/api/user/login.do', {
-        username: 'admin',
-        password: '123'
-      })
-    },
     fetchDriverInfo () {
       const _this = this
       this.isLoading = true
@@ -282,7 +276,6 @@ export default {
     }
   },
   created: async function () {
-    await this.login()
     this.fetchDriverInfo()
     this.fetchDriverTotalPayment()
   }

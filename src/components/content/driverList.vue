@@ -8,19 +8,20 @@
           </div>
           <div class="ibox-content" style="padding-bottom: 10px">
             <el-row :gutter="10">
-              <el-col :span="4"><el-input v-model="driverName" placeholder="司机姓名"></el-input></el-col>
-              <el-col :span="4"><el-input v-model="phoneNum" placeholder="司机手机"></el-input></el-col>
-              <el-col :span="4"><el-select clearable v-model="driverStatus" placeholder="司机状态">
+              <el-col :span="4"><el-input size="small" v-model="driverName" placeholder="司机姓名"></el-input></el-col>
+              <el-col :span="4"><el-input size="small" v-model="phoneNum" placeholder="司机手机"></el-input></el-col>
+              <el-col :span="4"><el-select size="small" clearable v-model="driverStatus" placeholder="司机状态">
+                <el-option label="未绑定车辆" value="0"></el-option>
                 <el-option label="正常运营" value="1"></el-option>
                 <el-option label="合作结束" value="2"></el-option>
               </el-select></el-col>
-              <el-col :span="4"><el-select clearable v-model="coModelType" placeholder="合作模式">
+              <el-col :span="4"><el-select size="small" clearable v-model="coModelType" placeholder="合作模式">
                 <el-option label="租赁" value="20"></el-option>
                 <el-option label="租购月供" value="30"></el-option>
                 <el-option label="租购周供" value="40"></el-option>
                 <el-option label="全款" value="10"></el-option>
               </el-select></el-col>
-              <el-col :span="4"><el-select clearable v-model="orderBy" placeholder="排序方式">
+              <el-col :span="4"><el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
                 <el-option label="违章扣分" value="score"></el-option>
                 <el-option label="违章罚金" value="money"></el-option>
                 <el-option label="加入时间" value="startDate"></el-option>
@@ -28,13 +29,13 @@
               </el-col>
             </el-row>
             <el-row :gutter="10">
-              <el-col :span="4"><el-input v-model="plateNum" placeholder="车牌号码"></el-input></el-col>
+              <el-col :span="4"><el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input></el-col>
             </el-row>
           </div>
           <div class="ibox-footer">
             <el-button  icon="search" size="small" @click="query">查询</el-button>
-            <el-button :plain="true" type="warning" icon="delete2" size="small">重置</el-button>
-            <el-button type="info" size="small" class="pull-right" >新增司机<el-icon name="plus"></el-icon></el-button>
+            <el-button :plain="true" @click="reset" type="warning" icon="delete2" size="small">重置</el-button>
+            <el-button type="info" size="small" class="pull-right" @click="toAddOrUpdateDriver(0)" >新增司机<el-icon name="plus"></el-icon></el-button>
           </div>
         </div>
       </div>
@@ -59,7 +60,7 @@
                 label="司机姓名"
                 width="100">
                 <template scope="scope">
-                  <a @click="route(scope.row.driverId)">{{ scope.row.driverName }}</a>
+                  <a @click="toDriverDetail(scope.row.driverId)">{{ scope.row.driverName }}</a>
                 </template>
               </el-table-column>
               <el-table-column
@@ -83,6 +84,7 @@
                   <span>
                     <el-tag v-if="scope.row.driverStatus=='正常运营'" type="primary">{{scope.row.driverStatus}}</el-tag>
                     <el-tag v-if="scope.row.driverStatus=='合作结束'" type="danger">{{scope.row.driverStatus}}</el-tag>
+                    <el-tag v-if="scope.row.driverStatus=='未绑定车辆'" >{{scope.row.driverStatus}}</el-tag>
                   </span>
                 </template>
               </el-table-column>
@@ -96,7 +98,8 @@
                   <small style="margin-left: 10px">{{ scope.row.periodStartDate }}</small>
                 </template>
               </el-table-column>
-              <el-table-column label="违章情况">
+              <el-table-column label="违章情况"
+                               width="110">
                 <template scope="scope">
                   <small style="margin-left: 10px">{{ scope.row.ticket}}</small>
                 </template>
@@ -104,7 +107,7 @@
               <el-table-column label="操作"
               width="100">
                 <template scope="scope">
-                  <el-button :plain="true" size="mini" type="info">资料修改</el-button>
+                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">资料修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -161,19 +164,20 @@ export default {
             pageNum: this.pageNum
           }
         }).then(function (res) {
-          _this.total = res.data.data.total
-          _this.tableData = res.data.data.list
-          _this.isLoading = false
+          if (res.data.status === 0) {
+            _this.total = res.data.data.total
+            _this.tableData = res.data.data.list
+            _this.isLoading = false
+          } else if (res.data.status === 10) {
+            _this.$router.push({name: 'login'})
+          }
         })
     },
-    login: async function () {
-      return await axios.post('/api/user/login.do', {
-        username: 'admin',
-        password: '123'
-      })
-    },
-    route (driverId) {
+    toDriverDetail (driverId) {
       this.$router.push({name: 'driver-detail', params: {id: driverId}})
+    },
+    toAddOrUpdateDriver (driverId) {
+      this.$router.push({name: 'add-or-update-driver', params: {id: driverId}})
     },
     query () {
       this.pageNum = 1
@@ -187,10 +191,17 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.fetchData()
+    },
+    reset () {
+      this.driverName = ''
+      this.phoneNum = ''
+      this.driverStatus = ''
+      this.coModelType = ''
+      this.orderBy = ''
+      this.plateNum = ''
     }
   },
   created: async function () {
-    await this.login()
     this.fetchData()
   }
 }

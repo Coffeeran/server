@@ -18,6 +18,9 @@ import propertyManage from '@/components/content/propertyManage'
 import periodPaymentList from '@/components/function_part/periodPaymentList'
 import periodPaymentGeneralList from '@/components/function_part/periodPaymentGeneralList'
 import driverDetail from '@/components/function_part/driverDetail'
+import addOrUpdateDriver from '@/components/content/addOrUpdateDriver'
+import addOrUpdateCar from '@/components/content/addOrUpdateCar'
+import login from '@/components/login'
 
 Vue.use(Router)
 
@@ -28,93 +31,168 @@ export default new Router({
       path: '/',
       name: 'Layout',
       component: Layout,
+      redirect: '/basic',
       children: [
         {
           path: 'console',
           component: sideNavConsole,
+          meta: {
+            requireAuth: true
+          },
           redirect: '/console/position',
           children: [
             {
               path: 'position',
-              component: positionMonitor
+              component: positionMonitor,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'guyu_data',
-              component: guyuData
+              component: guyuData,
+              meta: {
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: 'basic',
           component: sideNavBasic,
+          meta: {
+            requireAuth: true
+          },
           redirect: '/basic/driver_list',
           children: [
             {
               path: 'driver_list',
-              component: driverList
+              name: 'driver-list',
+              component: driverList,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'car_list',
-              component: carList
+              component: carList,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'property_manage',
               component: propertyManage,
+              meta: {
+                requireAuth: true
+              },
               redirect: '/basic/property_manage/period_payment_general_list',
               children: [
                 {
                   path: 'period_payment_general_list',
-                  component: periodPaymentGeneralList
+                  component: periodPaymentGeneralList,
+                  meta: {
+                    requireAuth: true
+                  }
                 },
                 {
                   path: 'period_payment_list/:co_model_type/:date',
                   name: 'period-payment-list',
-                  component: periodPaymentList
+                  component: periodPaymentList,
+                  meta: {
+                    requireAuth: true
+                  }
                 },
                 {
                   path: 'driver_detail/:id',
                   name: 'driver-detail',
-                  component: driverDetail
+                  component: driverDetail,
+                  meta: {
+                    requireAuth: true
+                  }
                 }
               ]
+            },
+            {
+              path: 'add_or_update_driver/:id',
+              name: 'add-or-update-driver',
+              component: addOrUpdateDriver,
+              meta: {
+                requireAuth: true
+              }
+            },
+            {
+              path: 'add_or_update_car/:id',
+              name: 'add-or-update-car',
+              component: addOrUpdateCar,
+              meta: {
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: 'order',
           component: sideNavOrder,
+          meta: {
+            requireAuth: true
+          },
           redirect: '/order/new_order',
           children: [
             {
               path: 'new_order',
-              component: newOrder
+              component: newOrder,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'order_manager',
-              component: orderManager
+              component: orderManager,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'stock_manager',
-              component: stockManager
+              component: stockManager,
+              meta: {
+                requireAuth: true
+              }
             }
           ]
         },
         {
           path: 'user',
           component: sideNavUser,
+          meta: {
+            requireAuth: true
+          },
           redirect: '/user/user_center',
           children: [
             {
               path: 'user_center',
-              component: userCenter
+              component: userCenter,
+              meta: {
+                requireAuth: true
+              }
             },
             {
               path: 'register',
-              component: register
+              component: register,
+              meta: {
+                requireAuth: true
+              }
             }
           ]
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })
+

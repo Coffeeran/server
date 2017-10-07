@@ -1,55 +1,70 @@
 <template>
-  <el-form :model="ruleForm" :rules="rules"  label-width="100px" class="demo-ruleForm">
-    <el-form-item label="合作模式" prop="region">
-      <el-select v-model="modelType1" clearable placeholder="请选择合作模式">
-        <el-option v-for="item in options" :key="item.value"
-        :label="item.label"
-        :value="item.value"></el-option>
+  <el-form :model="coModelForm" :rules="coModelRules"  label-width="100px" class="demo-ruleForm">
+    <el-form-item label="合作模式">
+      <el-select :disabled="coModelDisable" size="small" v-model="coModelForm.modelType">
+        <el-option label="全款" value="10"></el-option>
+        <el-option label="租赁" value="20"></el-option>
+        <el-option label="租购-月供" value="30"></el-option>
+        <el-option label="租购-周供" value="40"></el-option>
       </el-select>
-      <el-select v-if="!modelType1" v-model="modelType2" clearable placeholder="请选择合作模式">
-        <el-option v-for="item in zugou" :key="item.value"
-                   :label="item.label"
-                   :value="item.value"></el-option>
-      </el-select>
+    </el-form-item>
+    <el-form-item label="合作起止时间">
+      <el-date-picker
+        :disabled="coModelDisable"
+        size="small"
+        range-separator=" 至 "
+        v-model="coModelForm.periodDateArray"
+        type="daterange"
+        placeholder="选择合作起止日期">
+      </el-date-picker>
     </el-form-item>
     <el-form-item label="总计金额" prop="totalAmount">
       <el-col :span="8">
-        <el-input value="number" v-model="ruleForm.totalAmount">
+        <el-input :disabled="coModelDisable" size="small" value="number" v-model="coModelForm.totalAmount">
           <template slot="append">{{cTotalAmount}}</template>
         </el-input>
       </el-col>
     </el-form-item>
     <el-form-item label="首付金额" prop="downAmount">
       <el-col :span="8">
-        <el-input value="number" v-model="ruleForm.downAmount">
+        <el-input :disabled="coModelDisable" size="small" value="number" v-model="coModelForm.downAmount">
           <template slot="append">{{cDownAmount}}</template>
         </el-input>
       </el-col>
     </el-form-item>
     <el-form-item label="尾款金额" prop="finalAmount">
       <el-col :span="8">
-        <el-input value="number" v-model="ruleForm.finalAmount">
+        <el-input :disabled="coModelDisable" size="small" value="number" v-model="coModelForm.finalAmount">
           <template slot="append">{{cFinalAmount}}</template>
         </el-input>
       </el-col>
     </el-form-item>
-    <el-form-item v-if="ruleForm.modelTypeResult!=10" label="付款月数" prop="periodNum">
-      <el-col :span="5">
-        <el-input-number :min="1" :max="36" v-model="ruleForm.periodNum"></el-input-number>
+    <el-form-item v-if="coModelForm.modelType!='10'" label="付款月数" prop="periodNum">
+      <el-col :span="10">
+        <el-input-number :disabled="coModelDisable" size="small" :min="1" :max="36" v-model="coModelForm.periodNum"></el-input-number>
+        <el-date-picker
+          :disabled="coModelDisable"
+          size="small"
+          range-separator=" 至 "
+          v-model="coModelForm.periodPlanStartDate"
+          type="date"
+          placeholder="还款起始日期">
+        </el-date-picker>
       </el-col>
     </el-form-item>
-    <el-form-item v-if="ruleForm.modelTypeResult!=10" label="每月金额">
+    <el-form-item v-if="coModelForm.modelType!='10'" label="每月金额">
       <el-col :span="5">
-        <el-input :disabled="true" v-model="periodPayment"></el-input>
+        <el-input size="small" :disabled="true" v-model="periodPayment"></el-input>
       </el-col>
     </el-form-item>
     <el-form-item label="备注">
       <el-col :span="5">
         <el-input
+          :disabled="coModelDisable"
           type="textarea"
           autosize
           placeholder="请输入内容"
-          v-model="ruleForm.comment">
+          v-model="coModelForm.comment">
         </el-input>
       </el-col>
     </el-form-item>
@@ -60,16 +75,17 @@
  export default {
    data () {
      return {
-       modelType1: '',
-       modelType2: '',
+       coModelDisable: false,
        cDownAmount: '零元整',
        cTotalAmount: '零元整',
-       ruleForm: {
+       coModelForm: {
+         periodDateArray: '',
          modelType: '',
          totalAmount: '',
          downAmount: '',
+         periodPlanStartDate: '',
          finalAmount: '',
-         periodNum: 36,
+         periodNum: '',
          comment: ''
        },
        options: [{
@@ -91,7 +107,7 @@
          label: '租购月供'
        }
        ],
-       rules: {
+       coModelRules: {
          downAmount: [
            { required: true, message: '请输入首付金额', trigger: 'blur' }
          ],
@@ -130,37 +146,24 @@
          s = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + s
        }
        return head + s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整')
-     },
-     validate () {
-       if (this.ruleForm.totalAmount === '' || this.ruleForm.downAmount === '' || this.ruleForm.finalAmount === '') {
-         return false
-       }
-       return true
      }
    },
    computed: {
      periodPayment () {
-       return (this.ruleForm.totalAmount - this.ruleForm.downAmount - this.ruleForm.finalAmount) / this.ruleForm.periodNum
+       return (this.coModelForm.totalAmount - this.coModelForm.downAmount - this.coModelForm.finalAmount) / this.coModelForm.periodNum
      },
      cFinalAmount () {
-       return this.getChineseAmount(this.ruleForm.finalAmount)
+       return this.getChineseAmount(this.coModelForm.finalAmount)
      }
    },
    watch: {
-//     由于级联不能设置一个值,所以绑定两个值再合并计算最终结果
-     modelType1: function () {
-       this.ruleForm.modelType = this.modelType1 ? this.modelType1 : this.modelType2
-     },
-     modelType2: function () {
-       this.ruleForm.modelType = this.modelType1 ? this.modelType1 : this.modelType2
-     },
-     'ruleForm.downAmount': function (val) {
+     'coModelForm.downAmount': function (val) {
        this.cDownAmount = this.getChineseAmount(val)
      },
-     'ruleForm.totalAmount': function (val) {
+     'coModelForm.totalAmount': function (val) {
        this.cTotalAmount = this.getChineseAmount(val)
      },
-     'ruleForm': {
+     'coModelForm': {
        handler (val) {
          this.$emit('coModel', val)
        },

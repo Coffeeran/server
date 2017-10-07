@@ -74,12 +74,6 @@
       }
     },
     methods: {
-      login () {
-        axios.post('/api/user/login.do', {
-          username: 'admin',
-          password: '123'
-        })
-      },
       onComplete: async function () {
         this.isLoading = true
         try {
@@ -178,7 +172,6 @@
     },
     mounted () {
       this.$refs.carTableRef.getData()
-      this.login()
     }
   }
 </script>

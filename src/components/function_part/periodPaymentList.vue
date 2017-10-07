@@ -133,7 +133,11 @@
                     <el-option label="支付宝" value="1"></el-option>
                     <el-option label="现金" value="3"></el-option>
                     <el-option label="银行转账" value="4"></el-option>
+                    <el-option label="POS机" value="5"></el-option>
                   </el-select>
+                </el-form-item>
+                <el-form-item label="渠道流水号"  :label-width="formLabelWidth">
+                  <el-input v-model="form.platformNum" size="small" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="还款周期" :label-width="formLabelWidth">
                   <el-date-picker
@@ -186,19 +190,14 @@
         form: {
           name: '',
           payTime: '',
-          payMethod: ''
+          payMethod: '',
+          platformNum: ''
         },
         paymentDetail: '',
         formLabelWidth: '120px'
       }
     },
     methods: {
-      login: async function () {
-        return await axios.post('/api/user/login.do', {
-          username: 'admin',
-          password: '123'
-        })
-      },
       query () {
         this.pageNum = 1
         this.pageSize = 10
@@ -227,9 +226,13 @@
               pageNum: this.pageNum
             }
           }).then(function (res) {
-            _this.total = res.data.data.total
-            _this.tableData = res.data.data.list
-            _this.isLoading = false
+            if (res.data.status === 0) {
+              _this.total = res.data.data.total
+              _this.tableData = res.data.data.list
+              _this.isLoading = false
+            } else if (res.data.status === 10) {
+              _this.$router.push({name: 'login'})
+            }
           })
       },
       handleSizeChange (val) {
@@ -247,16 +250,20 @@
             driverId: _this.driverId,
             payment: _this.form.payment,
             paymentPlatform: _this.form.payMethod,
-            payTime: _this.form.payTime
+            payTime: _this.form.payTime,
+            platformNum: _this.form.platformNum
           }
         }).then(function (res) {
           if (res.data.status === 0) {
             _this.dialogFormVisible = false
-            _this.message('成功添加数据', true)
+            _this.message('成功添加数据,等待确认', true)
             _this.fetchData()
           }
           if (res.data.status === 1) {
             _this.message(res.data.msg, false)
+          }
+          if (res.data.status === 10) {
+            _this.$router.push({name: 'login'})
           }
         })
       },
@@ -279,7 +286,11 @@
             date: _this.startDate
           }
         }).then(function (res) {
-          _this.paymentDetail = res.data.data
+          if (res.data.status === 0) {
+            _this.paymentDetail = res.data.data
+          } else if (res.data.status === 10) {
+            _this.$router.push({name: 'login'})
+          }
         })
       },
       exportCsv () {
@@ -303,7 +314,6 @@
       }
       this.dateType = 'month'
       this.dateFormat = 'yyyy-MM'
-      await this.login()
       this.fetchData()
     }
   }
