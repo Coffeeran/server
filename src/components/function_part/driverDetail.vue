@@ -18,6 +18,7 @@
                       <thead>
                       <tr>
                         <th>序号</th>
+                        <th>账户姓名</th>
                         <th>账号类型</th>
                         <th>账号</th>
                         <th>添加时间</th>
@@ -26,6 +27,7 @@
                       <tbody>
                       <tr v-for="(item,index) in accountList">
                         <td>{{index+1}}</td>
+                        <td>{{item.name}}</td>
                         <td>{{item.platform}}</td>
                         <td>{{item.account}}</td>
                         <td>{{item.createTime}}</td>
@@ -38,6 +40,9 @@
                           <el-option label="支付宝" value="1"></el-option>
                           <el-option label="银行卡" value="4"></el-option>
                         </el-select>
+                      </el-form-item>
+                      <el-form-item label="账户姓名" :label-width="formLabelWidth">
+                        <el-input v-model="form.name" auto-complete="off" size="small"></el-input>
                       </el-form-item>
                       <el-form-item label="账号" :label-width="formLabelWidth">
                         <el-input v-model="form.account" auto-complete="off" size="small"></el-input>
@@ -216,6 +221,7 @@ export default {
       showForm: false,
       accountList: '',
       form: {
+        name: '',
         platform: '',
         account: ''
       },
@@ -266,6 +272,7 @@ export default {
       axios.get('/api/manage/driver/add_account.do', {
         params: {
           driverId: _this.$route.params.id,
+          name: _this.name,
           platformCode: _this.form.platform,
           account: _this.form.account
         }
