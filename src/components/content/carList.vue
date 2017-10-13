@@ -16,8 +16,8 @@
                 <el-option label="库存中" value="0"></el-option>
               </el-select></el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="branch" placeholder="选择城市">
-                <el-option label="成都" value="1"></el-option>
-                <el-option label="昆明" value="2"></el-option>
+                <el-option label="成都" value="0"></el-option>
+                <el-option label="昆明" value="1"></el-option>
               </el-select></el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
                 <el-option label="违章扣分" value="score"></el-option>
