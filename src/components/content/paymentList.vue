@@ -62,14 +62,17 @@
           </div>
           <div class="ibox-content" element-loading-text="加载中" style="padding-bottom: 50px">
             <el-table
+              ref="paymentList"
+              @selection-change="handleSelectionChange"
               v-loading.body="isLoading"
               :data="tableData"
               border
+              show-summary
               style="width: 100%"
               :stripe="true">
               <el-table-column
                 type="selection"
-                width="55">
+                width="60">
               </el-table-column>
               <el-table-column
                 label="款项状态"
@@ -77,22 +80,21 @@
                 <template scope="scope">
                   <el-popover
                     placement="left"
-                    width="160">
+                    width="230">
                     <div style="text-align: right; margin: 0">
-                      <el-button type="primary" size="mini">正常</el-button>
-                      <el-button type="warning" size="mini">逾期</el-button>
-                      <el-button type="danger" size="mini">作废</el-button>
+                      <el-button @click="submit(0)" size="mini">取消确认</el-button>
+                      <el-button @click="submit(1)" type="primary" size="mini">正常</el-button>
+                      <el-button @click="submit(2)" type="warning" size="mini">逾期</el-button>
+                      <el-button @click="submit(-1)" type="danger" size="mini">作废</el-button>
                     </div>
-                    <el-button slot="reference" size="small">{{ scope.row.paymentStatus }}</el-button>
+                    <el-button @click="toggleSelection(scope.row)" slot="reference" size="mini">{{ scope.row.paymentStatus }}</el-button>
                   </el-popover>
                 </template>
               </el-table-column>
               <el-table-column
+                prop="paymentAmount"
                 label="款项金额"
                 width="100">
-                <template scope="scope">
-                  <span style="margin-left: 10px">{{ Number(scope.row.paymentAmount).toLocaleString() }}</span>
-                </template>
               </el-table-column>
               <el-table-column label="付款人" width="100">
                 <template scope="scope">
@@ -137,10 +139,14 @@
                                width="80"
               fixed="right">
                 <template scope="scope">
-                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">修改</el-button>
+                  <el-button :disabled="disable" @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
+            <el-button @click="submit(0)" class="pull-left" size="mini" style="margin-top: 8px">取消确认</el-button>
+            <el-button @click="submit(1)" class="pull-left" type="primary" size="mini" style="margin-top: 8px">正常</el-button>
+            <el-button @click="submit(2)" class="pull-left" type="warning" size="mini" style="margin-top: 8px">逾期</el-button>
+            <el-button @click="submit(-1)" class="pull-left" type="danger" size="mini" style="margin-top: 8px">作废</el-button>
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -175,7 +181,8 @@
         platformStatus: '0',
         coModelType: '',
         tableData: [],
-        isLoading: false
+        isLoading: false,
+        selection: []
       }
     },
     methods: {
@@ -232,6 +239,97 @@
       handleClick (tab) {
         this.paymentPlatform = tab.name
         this.fetchData()
+      },
+      handleSelectionChange (val) {
+        this.selection = []
+        for (var i = 0; i < val.length; i++) {
+          this.selection[i] = val[i]
+        }
+      },
+      toggleSelection (row) {
+        this.$refs.paymentList.toggleRowSelection(row)
+      },
+      submit (status) {
+        if (this.selection.length === 0) {
+          this.$message({
+            type: 'info',
+            message: '请选择款项'
+          })
+        } else {
+          var info = '确认修改 ['
+          for (var i = 0; i < this.selection.length; i++) {
+            info = info + this.selection[i].driverName + ':' + this.selection[i].paymentAmount + ' \r\n '
+          }
+          info = info + '] 的状态为 '
+          switch (status) {
+            case 0 :
+              info = info + '--取消确认--'
+              break
+            case 1 :
+              info = info + '--正常--'
+              break
+            case 2 :
+              info = info + '--逾期--'
+              break
+            case -1 :
+              info = info + '--作废--'
+              break
+          }
+
+          this.$confirm(info, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            //  如果点击确定,则组装id数组
+            const paymentIds = []
+            for (var i = 0; i < this.selection.length; i++) {
+              paymentIds[i] = this.selection[i].id
+            }
+            console.log(paymentIds)
+            //  提交数据
+            axios.get('api/manage/period_payment/update_payment_status.do',
+              {
+                params: {
+                  paymentIdArray: paymentIds,
+                  paymentStatus: status
+                }
+              }).then((res) => {
+              //  如果状态成功则消息提示,并重新提取数据
+                if (res.data.status === 0) {
+                  this.$message({
+                    type: 'success',
+                    message: '操作成功!'
+                  })
+                  this.fetchData()
+                } else {
+                  this.$message({
+                    type: 'error',
+                    message: res.data.msg
+                  })
+                }
+              })
+          }).catch(() => {
+            this.$refs.paymentList.clearSelection()
+            this.$message({
+              type: 'info',
+              message: '已取消修改'
+            })
+          })
+        }
+      }
+    },
+    watch: {
+      platformStatus () {
+        this.query()
+      }
+    },
+    computed: {
+      disable () {
+        if (this.platformStatus !== '0') {
+          return true
+        }
+        return false
       }
     },
     mounted () {
@@ -241,7 +339,7 @@
 </script>
 <style>
   .el-message{
-    top: 20%;
+    top: 50%;
   }
 
   .el-row {
