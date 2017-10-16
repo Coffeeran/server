@@ -183,7 +183,8 @@ export default {
           }
         }).then(function (res) {
           if (res.data.status === 0) {
-            _this.message('操作成功', true)
+            _this.message(res.data.msg, true)
+            _this.$router.push({path: '/basic/car_list'})
           } else if (res.data.status === 1) {
             _this.message(res.data.msg, false)
           }

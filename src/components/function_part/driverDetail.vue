@@ -237,8 +237,12 @@ export default {
           driverId: _this.$route.params.id
         }
       }).then(function (res) {
-        _this.driverInfo = res.data.data
-        _this.isLoading = false
+        if (res.data.status === 0) {
+          _this.driverInfo = res.data.data
+          _this.isLoading = false
+        } else if (res.data.status === 10) {
+          _this.$router.push({name: 'login'})
+        }
       })
     },
     fetchDriverTotalPayment () {
@@ -272,7 +276,7 @@ export default {
       axios.get('/api/manage/driver/add_account.do', {
         params: {
           driverId: _this.$route.params.id,
-          name: _this.name,
+          name: _this.form.name,
           platformCode: _this.form.platform,
           account: _this.form.account
         }

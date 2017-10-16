@@ -488,6 +488,7 @@
         }).then(function (res) {
           if (res.data.status === 0) {
             _this.message(res.data.msg, true)
+            _this.$router.push({path: '/basic/driver_list'})
           }
         })
       },

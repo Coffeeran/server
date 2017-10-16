@@ -250,7 +250,7 @@
             driverId: _this.driverId,
             payment: _this.form.payment,
             paymentPlatform: _this.form.payMethod,
-            payTime: _this.form.payTime,
+            payTime: _this.form.payTime.getTime(),
             platformNum: _this.form.platformNum
           }
         }).then(function (res) {
@@ -301,8 +301,8 @@
       }
     },
     created: async function () {
-      this.startDate = this.$route.params.date
-      this.form.payTime = this.$route.params.date
+      this.startDate = new Date(this.$route.params.date)
+      this.form.payTime = new Date(this.$route.params.date)
       this.coModelType = this.$route.params.co_model_type
       //  todo list日期显示格式
       if (this.coModelType === '30') {
