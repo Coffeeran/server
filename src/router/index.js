@@ -21,6 +21,7 @@ import driverDetail from '@/components/function_part/driverDetail'
 import addOrUpdateDriver from '@/components/content/addOrUpdateDriver'
 import addOrUpdateCar from '@/components/content/addOrUpdateCar'
 import login from '@/components/login'
+import paymentList from '@/components/content/paymentList'
 
 Vue.use(Router)
 
@@ -125,6 +126,14 @@ export default new Router({
               path: 'add_or_update_car/:id',
               name: 'add-or-update-car',
               component: addOrUpdateCar,
+              meta: {
+                requireAuth: true
+              }
+            },
+            {
+              path: 'payment_list',
+              name: 'payment-list',
+              component: paymentList,
               meta: {
                 requireAuth: true
               }

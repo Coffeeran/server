@@ -124,10 +124,13 @@
             </el-pagination>
             <el-dialog :title="addDriverName" :visible.sync="dialogFormVisible" :modal="false">
               <el-form :model="form">
-                <el-form-item label="还款金额"  :label-width="formLabelWidth">
+                <el-form-item label="付款人"  :label-width="formLabelWidth">
+                  <el-input v-model="form.payer" size="small" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="款项金额"  :label-width="formLabelWidth">
                   <el-input v-model="form.payment" size="small" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="付款渠道" :label-width="formLabelWidth">
+                <el-form-item label="款项渠道" :label-width="formLabelWidth">
                   <el-select v-model="form.payMethod" placeholder="请选择付款方式">
                     <el-option label="微信" value="2"></el-option>
                     <el-option label="支付宝" value="1"></el-option>
@@ -145,6 +148,9 @@
                     type="date"
                     placeholder="选择日期时间">
                   </el-date-picker>
+                </el-form-item>
+                <el-form-item label="备注"  :label-width="formLabelWidth">
+                  <el-input v-model="form.comment" size="small" auto-complete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -188,10 +194,11 @@
         pageNum: 1,
         pageSize: 10,
         form: {
-          name: '',
+          payer: '',
           payTime: '',
           payMethod: '',
-          platformNum: ''
+          platformNum: '',
+          comment: ''
         },
         paymentDetail: '',
         formLabelWidth: '120px'
@@ -249,9 +256,11 @@
           params: {
             driverId: _this.driverId,
             payment: _this.form.payment,
+            payer: _this.form.payer,
             paymentPlatform: _this.form.payMethod,
             payTime: _this.form.payTime.getTime(),
-            platformNum: _this.form.platformNum
+            platformNum: _this.form.platformNum,
+            comment: _this.form.comment
           }
         }).then(function (res) {
           if (res.data.status === 0) {
@@ -271,9 +280,11 @@
         this.addDriverName = driverName
         this.dialogFormVisible = true
         this.driverId = driverId
+        this.form.payer = driverName
         this.form.payment = ''
         this.form.payMethod = ''
         this.form.comment = ''
+        this.form.platformNum = ''
       },
       route (driverId) {
         this.$router.push({name: 'driver-detail', params: {id: driverId}})

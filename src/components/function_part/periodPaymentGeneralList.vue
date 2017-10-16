@@ -112,7 +112,7 @@
                 <el-table-column
                   label="银行">
                   <template scope="scope">
-                    <el-tag style="color: #C1328E; border-color: #C1328E;" v-if="scope.row.bankReceived>0"  color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
+                    <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.bankReceived>0"  color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
