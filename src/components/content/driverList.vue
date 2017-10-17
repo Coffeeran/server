@@ -67,7 +67,7 @@
                 label="司机手机号"
                 width="150">
                 <template scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.phoneNum }}</span>
+                  <el-badge is-dot class="item">{{ scope.row.phoneNum }}</el-badge>
                 </template>
               </el-table-column>
               <el-table-column
@@ -207,6 +207,11 @@ export default {
 }
 </script>
 <style>
+
+  .item {
+    margin-top: 10px;
+  }
+
   .el-row {
     margin-bottom: 10px;
     &:last-child {

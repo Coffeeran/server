@@ -122,7 +122,10 @@
               :total="total"
               class="pull-right" style="margin-top: 8px">
             </el-pagination>
-            <el-dialog :title="addDriverName" :visible.sync="dialogFormVisible" :modal="false">
+            <el-dialog :title="addDriverName"
+                       :visible.sync="dialogFormVisible"
+                       :modal="false"
+                        top="2%">
               <el-form :model="form">
                 <el-form-item label="付款人"  :label-width="formLabelWidth">
                   <el-input v-model="form.payer" size="small" auto-complete="off"></el-input>

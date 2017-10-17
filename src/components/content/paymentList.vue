@@ -159,8 +159,8 @@
               class="pull-right" style="margin-top: 8px">
             </el-pagination>
             <el-dialog  :visible.sync="dialogFormVisible"
-                        :modal="false"
-                        >
+                        top="2%"
+                        :modal="false">
               <el-form :model="form">
                 <el-form-item label="付款人"  :label-width="formLabelWidth">
                   <el-input v-model="form.payer" size="small" auto-complete="off"></el-input>
