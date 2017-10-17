@@ -80,14 +80,14 @@
               </el-table-column>
               <el-table-column
                 label="应收金额"
-                width="150">
+                width="110">
                 <template scope="scope">
                   <el-tag type="gray">{{Number(scope.row.amountReceivable).toLocaleString()}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column
                 label="已收金额"
-                width="150">
+                >
                 <el-table-column
                 label="微信">
                   <template scope="scope">
@@ -96,30 +96,40 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="支付宝">
+                  label="支付宝"
+                  width="100">
                   <template scope="scope">
                     <el-tag v-if="scope.row.alipayReceived>0" type="primary" color="#FFFFFF">{{Number(scope.row.alipayReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="现金">
+                  label="现金"
+                  width="100">
                   <template scope="scope">
                     <el-tag v-if="scope.row.cashReceived>0" type="gray" :hit="true" color="#FFFFFF">{{Number(scope.row.cashReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="银行">
+                  label="银行"
+                  width="100">
                   <template scope="scope">
                     <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.bankReceived>0"  color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
+                    <div v-else>-</div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="POS">
+                  <template scope="scope">
+                    <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.posReceived>0"  color="#FFFFFF">{{Number(scope.row.posReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
 
               </el-table-column>
               <el-table-column
-                label="差额" width="130">
+                label="差额" width="110">
                 <template scope="scope">
                   <el-tag type="danger" :close-transition="true" :hit="true" color="#FFFFFF" v-if="scope.row.difference>0">{{Number(scope.row.difference).toLocaleString()}}</el-tag>
                   <el-tag type="success" :close-transition="true" color="#FFFFFF" v-if="scope.row.difference<=0">{{Number(scope.row.difference).toLocaleString()}}<el-icon name="check"></el-icon></el-tag>
@@ -127,7 +137,7 @@
               </el-table-column>
               <el-table-column
                 prop="driverNoReceivable"
-                label="未收人数" width="100">
+                label="应收人数" width="100">
               </el-table-column>
               <el-table-column
                 prop="driverNoReceived"

@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://mapleran.iask.in:8888',
+        target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

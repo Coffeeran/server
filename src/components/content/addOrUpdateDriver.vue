@@ -161,8 +161,8 @@
               </el-col>
               <el-col :span="4">
                 <el-select size="mini" clearable v-model="branch" placeholder="选择城市">
-                  <el-option label="成都" value="1"></el-option>
-                  <el-option label="昆明" value="2"></el-option>
+                  <el-option label="成都" value="0"></el-option>
+                  <el-option label="昆明" value="1"></el-option>
                 </el-select>
               </el-col>
               <el-col :span="4">
@@ -450,6 +450,8 @@
             _this.message(res.data.msg, true)
           } else if (res.data.status === 10) {
             _this.$router.push({name: 'login'})
+          } else {
+            _this.message(res.data.msg, false)
           }
         })
       },

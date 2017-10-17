@@ -42,6 +42,7 @@
           <div class="ibox-footer">
             <el-button  icon="search" size="small" @click="query">查询</el-button>
             <el-button :plain="true" @click="reset" type="warning" icon="delete2" size="small">重置</el-button>
+            <el-button type="info" size="small" class="pull-right" @click="handleAddClick()" >新增收款<el-icon name="plus"></el-icon></el-button>
           </div>
         </div>
       </div>
@@ -139,7 +140,7 @@
                                width="80"
               fixed="right">
                 <template scope="scope">
-                  <el-button :disabled="disable" @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">修改</el-button>
+                  <el-button :disabled="disable" @click="handleAddClick(scope.row)" :plain="true" size="mini" type="info">修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -157,6 +158,55 @@
               :total="total"
               class="pull-right" style="margin-top: 8px">
             </el-pagination>
+            <el-dialog  :visible.sync="dialogFormVisible"
+                        :modal="false"
+                        >
+              <el-form :model="form">
+                <el-form-item label="付款人"  :label-width="formLabelWidth">
+                  <el-input v-model="form.payer" size="small" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="司机姓名"  :label-width="formLabelWidth">
+                  <el-autocomplete
+                    class="inline-input"
+                    v-model="form.driverName"
+                    :fetch-suggestions="querySearchAsync"
+                    placeholder="请输入内容"
+                    :trigger-on-focus="false"
+                    @select="handleSelect"
+                  ></el-autocomplete>
+                  {{idNum}}
+                </el-form-item>
+                <el-form-item label="款项金额"  :label-width="formLabelWidth">
+                  <el-input v-model="form.payment" size="small" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="款项渠道" :label-width="formLabelWidth">
+                  <el-select v-model="form.payMethod" placeholder="请选择付款方式">
+                    <el-option label="微信" value="2"></el-option>
+                    <el-option label="支付宝" value="1"></el-option>
+                    <el-option label="现金" value="3"></el-option>
+                    <el-option label="银行转账" value="4"></el-option>
+                    <el-option label="POS机" value="5"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="渠道流水号"  :label-width="formLabelWidth">
+                  <el-input v-model="form.platformNum" size="small" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="还款周期" :label-width="formLabelWidth">
+                  <el-date-picker
+                    v-model="form.payTime"
+                    type="date"
+                    placeholder="选择日期时间">
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item label="备注"  :label-width="formLabelWidth">
+                  <el-input v-model="form.comment" size="small" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleAddPayment">确 定</el-button>
+              </div>
+            </el-dialog>
           </div>
         </div>
       </div>
@@ -166,9 +216,11 @@
 
 <script>
   import axios from 'axios'
+
   export default {
     data () {
       return {
+        dialogFormVisible: false,
         visible2: false,
         total: 5,
         pageNum: 1,
@@ -182,7 +234,19 @@
         coModelType: '',
         tableData: [],
         isLoading: false,
-        selection: []
+        selection: [],
+        form: {
+          id: '',
+          driverName: '',
+          driverId: '',
+          payer: '',
+          payTime: '',
+          payMethod: '',
+          platformNum: '',
+          comment: ''
+        },
+        idNum: '',
+        formLabelWidth: '120px'
       }
     },
     methods: {
@@ -211,6 +275,51 @@
               _this.$router.push({name: 'login'})
             }
           })
+      },
+      handleAddClick (row) {
+        this.dialogFormVisible = true
+        this.form.driverId = row.driverId
+        this.form.driverName = row.driverName
+        this.form.paymentId = row.id
+        this.form.payer = row.payer
+        this.form.payment = row.paymentAmount
+        this.form.payMethod = row.paymentPlatformCode
+        this.form.platformNum = row.platformNum
+        this.form.payTime = new Date(row.periodTime)
+        this.form.comment = row.comment
+      },
+      handleAddPayment () {
+        const _this = this
+        axios.get('/api/manage/period_payment/add.do', {
+          params: {
+            paymentId: _this.form.paymentId,
+            driverId: _this.form.driverId,
+            payment: _this.form.payment,
+            payer: _this.form.payer,
+            paymentPlatform: _this.form.payMethod,
+            payTime: _this.form.payTime.getTime(),
+            platformNum: _this.form.platformNum,
+            comment: _this.form.comment
+          }
+        }).then(function (res) {
+          if (res.data.status === 0) {
+            _this.dialogFormVisible = false
+            _this.$message({
+              type: 'success',
+              message: res.data.msg
+            })
+            _this.fetchData()
+          }
+          if (res.data.status === 1) {
+            _this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+          if (res.data.status === 10) {
+            _this.$router.push({name: 'login'})
+          }
+        })
       },
       toAddOrUpdateDriver (driverId) {
         this.$router.push({name: 'add-or-update-driver', params: {id: driverId}})
@@ -250,6 +359,7 @@
         this.$refs.paymentList.toggleRowSelection(row)
       },
       submit (status) {
+        // 判断是否有勾选
         if (this.selection.length === 0) {
           this.$message({
             type: 'info',
@@ -317,11 +427,40 @@
             })
           })
         }
+      },
+      querySearchAsync (queryString, cb) {
+        const _this = this
+        axios.get('api/manage/driver/name_list.do', {
+          params: {
+            driverName: queryString
+          }
+        }).then(function (res) {
+          var driverList = res.data.data
+          var results = queryString ? driverList.filter(_this.createFilter(queryString)) : driverList
+          // 调用 callback 返回建议列表的数据
+          cb(results)
+        })
+      },
+      createFilter (queryString) {
+        return (driver) => {
+          return (driver.value.indexOf(queryString.toLowerCase()) === 0)
+        }
+      },
+      handleSelect (item) {
+        this.idNum = item.idNum
+        this.form.driverId = item.driverId
       }
     },
     watch: {
       platformStatus () {
         this.query()
+      },
+      dialogFormVisible (val) {
+        if (!val) {
+          this.idNum = ''
+          this.form.driverName = ''
+          this.form.driverId = ''
+        }
       }
     },
     computed: {
@@ -338,8 +477,9 @@
   }
 </script>
 <style>
+
   .el-message{
-    top: 50%;
+    top: 30%;
   }
 
   .el-row {

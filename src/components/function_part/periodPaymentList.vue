@@ -254,6 +254,7 @@
         const _this = this
         axios.get('/api/manage/period_payment/add.do', {
           params: {
+
             driverId: _this.driverId,
             payment: _this.form.payment,
             payer: _this.form.payer,
