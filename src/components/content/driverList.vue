@@ -65,7 +65,7 @@
               </el-table-column>
               <el-table-column
                 label="司机手机号"
-                width="150">
+                width="130">
                 <template scope="scope">
                   <el-badge is-dot class="item">{{ scope.row.phoneNum }}</el-badge>
                 </template>
