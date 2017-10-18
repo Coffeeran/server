@@ -475,6 +475,8 @@
           if (res.data.status === 0) {
             _this.driverInfo.coModelId = res.data.data
             _this.message(res.data.msg, true)
+          } else if (res.data.status === 1) {
+            _this.message(res.data.msg, false)
           } else if (res.data.status === 10) {
             _this.$router.push({name: 'login'})
           }

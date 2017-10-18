@@ -82,6 +82,8 @@
               </el-table-column>
               <el-table-column
                 label="已收金额">
+                <el-table-column
+                  label="已确认">
                 <template scope="scope">
                   <el-popover
                     placement="right"
@@ -90,17 +92,35 @@
                     >
                     <p v-for="item in paymentDetail">{{item.payment}}元 {{item.paymentPlatform}} {{item.comment}}   时间：{{item.updateTime}}</p>
                     <div slot="reference" class="name-warpper" @click="fetchPaymentDetail(scope.row.driverId)">
-                      <el-tag v-if="scope.row.payment>0" color="#FFFFFF" type="success" size="mini">{{scope.row.payment}}</el-tag>
-                      <strong v-if="scope.row.payment<=0">-</strong>
+                      <el-tag v-if="scope.row.confirmedPayment>0" color="#FFFFFF" type="primary" size="mini">{{scope.row.confirmedPayment}}</el-tag>
+                      <strong v-if="scope.row.confirmedPayment<=0">-</strong>
                     </div>
                   </el-popover>
                 </template>
               </el-table-column>
+                <el-table-column
+                  label="未确认">
+                  <template scope="scope">
+                    <el-popover
+                      placement="right"
+                      width="200"
+                      trigger="click"
+                    >
+                      <p v-for="item in paymentDetail">{{item.payment}}元 {{item.paymentPlatform}} {{item.comment}}   时间：{{item.updateTime}}</p>
+                      <div slot="reference" class="name-warpper" @click="fetchPaymentDetail(scope.row.driverId)">
+                        <el-tag v-if="scope.row.unconfirmedPayment>0" color="#FFFFFF" type="danger" size="mini">{{scope.row.unconfirmedPayment}}</el-tag>
+                        <strong v-if="scope.row.unconfirmedPayment<=0">-</strong>
+                      </div>
+                    </el-popover>
+                  </template>
+                </el-table-column>
+              </el-table-column>
               <el-table-column
-                label="付款状态">
+                label="付款状态"
+                align="center">
                 <template scope="scope">
-                  <el-icon v-if="scope.row.dueAmount-scope.row.payment>0" name="close"></el-icon>
-                  <el-icon v-if="scope.row.dueAmount-scope.row.payment<=0" name="check"></el-icon>
+                  <el-icon style="color: #ff4949;" v-if="scope.row.dueAmount-scope.row.confirmedPayment>0" name="close"></el-icon>
+                  <el-icon style="color: #20a0ff;" v-if="scope.row.dueAmount-scope.row.confirmedPayment<=0" name="check"></el-icon>
                 </template>
               </el-table-column>
               <el-table-column
