@@ -8,7 +8,16 @@
           </div>
           <div class="ibox-content" style="padding-bottom: 10px">
             <el-row :gutter="10">
-              <el-col :span="4"><el-input size="small" v-model="driverName" placeholder="司机姓名"></el-input></el-col>
+              <el-col :span="4">
+                <el-autocomplete
+                  class="inline-input"
+                  v-model="driverName"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="司机姓名"
+                  :trigger-on-focus="false"
+                  size="small"
+                ></el-autocomplete>
+              </el-col>
               <el-col :span="4"><el-input size="small" v-model="phoneNum" placeholder="司机手机"></el-input></el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="driverStatus" placeholder="司机状态">
                 <el-option label="未绑定车辆" value="0"></el-option>
@@ -67,7 +76,10 @@
                 label="司机手机号"
                 width="130">
                 <template scope="scope">
-                  <el-badge is-dot class="item">{{ scope.row.phoneNum }}</el-badge>
+                  <el-tag v-if="scope.row.phoneStatus=='1'" type="primary">{{ scope.row.phoneNum }}</el-tag>
+                  <el-tag v-if="scope.row.phoneStatus=='0'" type="danger">{{ scope.row.phoneNum }}</el-tag>
+                  <el-tag v-if="scope.row.phoneStatus=='2'" type="warning">{{ scope.row.phoneNum }}</el-tag>
+                  <el-tag v-if="!scope.row.phoneStatus">{{ scope.row.phoneNum }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column
@@ -191,6 +203,24 @@ export default {
     handleCurrentChange (val) {
       this.pageNum = val
       this.fetchData()
+    },
+    querySearchAsync (queryString, cb) {
+      const _this = this
+      axios.get('api/manage/driver/name_list.do', {
+        params: {
+          driverName: queryString
+        }
+      }).then(function (res) {
+        var driverList = res.data.data
+        var results = queryString ? driverList.filter(_this.createFilter(queryString)) : driverList
+        // 调用 callback 返回建议列表的数据
+        cb(results)
+      })
+    },
+    createFilter (queryString) {
+      return (driver) => {
+        return (driver.value.indexOf(queryString.toLowerCase()) === 0)
+      }
     },
     reset () {
       this.driverName = ''

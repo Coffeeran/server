@@ -16,7 +16,18 @@
                   type="daterange"
                   placeholder="选择起止日期">
                 </el-date-picker>              </el-col>
-              <el-col :span="4"><el-input size="small" v-model="driverName" placeholder="司机姓名"></el-input></el-col>
+              <el-col :span="4">
+
+                <el-autocomplete
+                  class="inline-input"
+                  v-model="driverName"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="司机姓名"
+                  :trigger-on-focus="false"
+                  size="small"
+                >
+                </el-autocomplete>
+                </el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="coModelType" placeholder="合作模式">
                 <el-option label="租赁" value="20"></el-option>
                 <el-option label="租购月供" value="30"></el-option>
@@ -170,8 +181,9 @@
                     class="inline-input"
                     v-model="form.driverName"
                     :fetch-suggestions="querySearchAsync"
-                    placeholder="请输入内容"
+                    placeholder="请输入司机姓名"
                     :trigger-on-focus="false"
+                    size="small"
                     @select="handleSelect"
                   ></el-autocomplete>
                   {{idNum}}

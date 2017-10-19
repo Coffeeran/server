@@ -29,7 +29,14 @@
             </el-row>
             <el-row :gutter="10">
               <el-col :span="4">
-                <el-input size="small" v-model="driverName" placeholder="司机姓名"></el-input>
+                <el-autocomplete
+                  class="inline-input"
+                  v-model="driverName"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="请输入司机姓名"
+                  :trigger-on-focus="false"
+                  size="small"
+                ></el-autocomplete>
 
               </el-col>
             </el-row>
@@ -211,6 +218,24 @@
       handleCurrentChange (val) {
         this.pageNum = val
         this.fetchData()
+      },
+      querySearchAsync (queryString, cb) {
+        const _this = this
+        axios.get('api/manage/driver/name_list.do', {
+          params: {
+            driverName: queryString
+          }
+        }).then(function (res) {
+          var driverList = res.data.data
+          var results = queryString ? driverList.filter(_this.createFilter(queryString)) : driverList
+          // 调用 callback 返回建议列表的数据
+          cb(results)
+        })
+      },
+      createFilter (queryString) {
+        return (driver) => {
+          return (driver.value.indexOf(queryString.toLowerCase()) === 0)
+        }
       },
       reset () {
         this.plateNum = ''
