@@ -6,7 +6,7 @@ import sideNavConsole from '@/components/side_nav/sideNavConsole'
 import sideNavOrder from '@/components/side_nav/sideNavOrder'
 import sideNavUser from '@/components/side_nav/sideNavUser'
 import positionMonitor from '@/components/content/positionMonitor'
-import guyuData from '@/components/content/guyuData'
+import bankData from '@/components/content/bankData'
 import carList from '@/components/content/carList'
 import driverList from '@/components/content/driverList'
 import newOrder from '@/components/content/newOrder'
@@ -50,8 +50,8 @@ export default new Router({
               }
             },
             {
-              path: 'guyu_data',
-              component: guyuData,
+              path: 'bank_data',
+              component: bankData,
               meta: {
                 requireAuth: true
               }

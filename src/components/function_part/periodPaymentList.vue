@@ -157,8 +157,8 @@
                   <el-select v-model="form.payMethod" placeholder="请选择付款方式">
                     <el-option label="微信" value="2"></el-option>
                     <el-option label="支付宝" value="1"></el-option>
-                    <el-option label="现金" value="3"></el-option>
-                    <el-option label="银行转账" value="4"></el-option>
+                    <el-option label="建设银行" value="3"></el-option>
+                    <el-option label="平安银行" value="4"></el-option>
                     <el-option label="POS机" value="5"></el-option>
                   </el-select>
                 </el-form-item>

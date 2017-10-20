@@ -66,9 +66,9 @@
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="全部" name=""></el-tab-pane>
               <el-tab-pane label="支付宝" name="1"></el-tab-pane>
-              <el-tab-pane label="银行" name="4"></el-tab-pane>
+              <el-tab-pane label="平安银行" name="4"></el-tab-pane>
+              <el-tab-pane label="建设银行" name="3"></el-tab-pane>
               <el-tab-pane label="微信" name="2"></el-tab-pane>
-              <el-tab-pane label="现金" name="3"></el-tab-pane>
               <el-tab-pane label="POS机" name="5"></el-tab-pane>
             </el-tabs>
           </div>
@@ -119,8 +119,8 @@
                 <template scope="scope">
                   <el-tag v-if="scope.row.paymentPlatform=='微信'" :hit="true" type="success" color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                   <el-tag v-if="scope.row.paymentPlatform=='支付宝'" :hit="true" type="primary" color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
-                  <el-tag v-if="scope.row.paymentPlatform=='现金'" :hit="true" type="gray"  color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
-                  <el-tag v-if="scope.row.paymentPlatform=='银行转账'" style="color: #fd6720; border-color: #fd6720;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
+                  <el-tag v-if="scope.row.paymentPlatform=='建设银行'" :hit="true" type="gray"  color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
+                  <el-tag v-if="scope.row.paymentPlatform=='平安银行'" style="color: #fd6720; border-color: #fd6720;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                   <el-tag v-if="scope.row.paymentPlatform=='POS机'" style="color: #E9CE46; border-color: #E9CE46;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                 </template>
               </el-table-column>
@@ -195,8 +195,8 @@
                   <el-select v-model="form.payMethod" placeholder="请选择付款方式">
                     <el-option label="微信" value="2"></el-option>
                     <el-option label="支付宝" value="1"></el-option>
-                    <el-option label="现金" value="3"></el-option>
-                    <el-option label="银行转账" value="4"></el-option>
+                    <el-option label="建设银行" value="3"></el-option>
+                    <el-option label="平安银行" value="4"></el-option>
                     <el-option label="POS机" value="5"></el-option>
                   </el-select>
                 </el-form-item>

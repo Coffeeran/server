@@ -104,18 +104,18 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="现金"
+                  label="建设银行"
                   width="100">
                   <template scope="scope">
-                    <el-tag v-if="scope.row.cashReceived>0" type="gray" :hit="true" color="#FFFFFF">{{Number(scope.row.cashReceived).toLocaleString()}}</el-tag>
+                    <el-tag v-if="scope.row.ccbReceived>0" type="gray" :hit="true" color="#FFFFFF">{{Number(scope.row.ccbReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="银行"
+                  label="平安银行"
                   width="100">
                   <template scope="scope">
-                    <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.bankReceived>0"  color="#FFFFFF">{{Number(scope.row.bankReceived).toLocaleString()}}</el-tag>
+                    <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.pinganReceived>0"  color="#FFFFFF">{{Number(scope.row.pinganReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
