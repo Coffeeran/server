@@ -467,7 +467,7 @@
             totalAmount: _this.coModelForm.totalAmount,
             downAmount: _this.coModelForm.downAmount,
             finalAmount: _this.coModelForm.finalAmount,
-            periodPlanStartDate: _this.coModelForm.periodPlanStartDate,
+            periodPlanStartDate: new Date(_this.coModelForm.periodPlanStartDate).getTime(),
             periodNum: _this.coModelForm.periodNum,
             comment: _this.coModelForm.comment
           }
