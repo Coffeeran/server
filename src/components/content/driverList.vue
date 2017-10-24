@@ -30,7 +30,8 @@
                 <el-option label="租购周供" value="40"></el-option>
                 <el-option label="全款" value="10"></el-option>
               </el-select></el-col>
-              <el-col :span="4"><el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
+              <el-col :span="4">
+                <el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
                 <el-option label="违章扣分" value="score"></el-option>
                 <el-option label="违章罚金" value="money"></el-option>
                 <el-option label="加入时间" value="startDate"></el-option>
@@ -38,7 +39,15 @@
               </el-col>
             </el-row>
             <el-row :gutter="10">
-              <el-col :span="4"><el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input></el-col>
+              <el-col :span="4">
+                <el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input>
+              </el-col>
+              <el-col :span="4">
+                <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                  <el-option label="成都" value="0"></el-option>
+                  <el-option label="昆明" value="1"></el-option>
+                </el-select>
+              </el-col>
             </el-row>
           </div>
           <div class="ibox-footer">
@@ -155,6 +164,7 @@ export default {
       phoneNum: '',
       driverStatus: '',
       coModelType: '',
+      branch: '',
       tableData: [],
       isLoading: false
     }
@@ -166,6 +176,7 @@ export default {
       axios.get('/api/manage/driver/list.do',
         {
           params: {
+            branch: this.branch,
             orderBy: this.orderBy,
             plateNum: this.plateNum,
             driverName: this.driverName,

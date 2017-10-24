@@ -104,7 +104,6 @@
               <el-form-item v-if="coModelForm.modelType!='10'" label="付款起始日期">
                 <el-col :span="10">
                   <el-date-picker
-                    @change="periodPlanStartTime"
                     :disabled="disableCoModel"
                     size="small"
                     v-model="coModelForm.periodPlanStartDate"
@@ -344,9 +343,6 @@
           _this.fetchCarList()
           _this.isLoading = false
         })
-      },
-      periodPlanStartTime (val) {
-        this.coModelForm.periodPlanStartDate = val
       },
       query () {
         this.pageNum = 1
