@@ -38,7 +38,8 @@
                       <el-form-item label="账户类型" :label-width="formLabelWidth">
                         <el-select v-model="form.platform" placeholder="请选择账户类型" size="small">
                           <el-option label="支付宝" value="1"></el-option>
-                          <el-option label="银行卡" value="4"></el-option>
+                          <el-option label="平安银行" value="4"></el-option>
+                          <el-option label="建设银行" value="3"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="账户姓名" :label-width="formLabelWidth">
