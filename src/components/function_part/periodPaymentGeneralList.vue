@@ -7,11 +7,9 @@
             资产管理
           </div>
           <div class="ibox-content" style="padding-bottom: 10px">
-            <el-row :gutter="20">
-              <el-col :span="6"></el-col>
-              <el-col :span="6"></el-col>
+            <el-row :gutter="15">
               <el-col :span="8">
-                <el-row :gutter="39">
+                <el-row :gutter="10">
                   <el-col :span="12">
                     <el-date-picker
                       size="small"
@@ -35,6 +33,14 @@
                     </el-date-picker>
                   </el-col>
                 </el-row>
+              </el-col>
+              <el-col :span="16">
+                <el-col >
+                  <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                    <el-option label="成都" value="0"></el-option>
+                    <el-option label="昆明" value="1"></el-option>
+                  </el-select>
+                </el-col>
               </el-col>
             </el-row>
           </div>
@@ -190,6 +196,7 @@
         total: 5,
         pageNum: 1,
         pageSize: 10,
+        branch: '',
         datePicker: {
           type: 'week',
           format: 'yyyy-MM-dd 第 WW 周'
@@ -222,6 +229,7 @@
         axios.get('/api/manage/period_payment/general_list.do',
           {
             params: {
+              branch: this.branch,
               startDate: this.startDate.getTime(),
               endDate: this.endDate.getTime(),
               coModelType: this.coModelType,
