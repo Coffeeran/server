@@ -99,7 +99,10 @@
                       <el-button @click="submit(2)" type="warning" size="mini">逾期</el-button>
                       <el-button @click="submit(-1)" type="danger" size="mini">作废</el-button>
                     </div>
-                    <el-button @click="toggleSelection(scope.row)" slot="reference" size="mini">{{ scope.row.paymentStatus }}</el-button>
+                    <el-button v-if="platformStatus == '0'" @click="toggleSelection(scope.row)" slot="reference" size="mini">{{ scope.row.paymentStatus }}</el-button>
+                    <el-button v-if="platformStatus == '1'" @click="toggleSelection(scope.row)" slot="reference" size="mini" type="success">{{ scope.row.paymentStatus }}</el-button>
+                    <el-button v-if="platformStatus == '2'" @click="toggleSelection(scope.row)" slot="reference" size="mini" type="warning">{{ scope.row.paymentStatus }}</el-button>
+                    <el-button v-if="platformStatus == '-1'" @click="toggleSelection(scope.row)" slot="reference" size="mini" type="danger">{{ scope.row.paymentStatus }}</el-button>
                   </el-popover>
                 </template>
               </el-table-column>
@@ -108,7 +111,7 @@
                 label="款项金额"
                 width="100">
               </el-table-column>
-              <el-table-column label="付款人" width="100">
+              <el-table-column label="付款人" width="90">
                 <template scope="scope">
                   <small style="margin-left: 10px">{{ scope.row.payer }}</small>
                 </template>
@@ -132,17 +135,17 @@
 
               <el-table-column
                 label="备注"
-                width="100">
+                width="120">
                 <template scope="scope">
                   <small>{{scope.row.comment}}</small>
                 </template>
               </el-table-column>
-              <el-table-column label="添加时间" width="180">
+              <el-table-column label="付款时间" width="180">
                 <template scope="scope">
                   <el-tag>{{ scope.row.addTime }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column label="付款周期时间" width="120">
+              <el-table-column label="周期时间" width="120">
                 <template scope="scope">
                   <el-tag>{{ scope.row.periodTime }}</el-tag>
                 </template>
@@ -187,6 +190,7 @@
                     @select="handleSelect"
                   ></el-autocomplete>
                   {{idNum}}
+                  <el-checkbox v-model="form.addToAccount" size="small">常用</el-checkbox>
                 </el-form-item>
                 <el-form-item label="款项金额"  :label-width="formLabelWidth">
                   <el-input v-model="form.payment" size="small" auto-complete="off"></el-input>
@@ -249,6 +253,7 @@
         selection: [],
         form: {
           id: '',
+          addToAccount: false,
           driverName: '',
           driverId: '',
           payer: '',
@@ -304,6 +309,7 @@
         const _this = this
         axios.get('/api/manage/period_payment/add.do', {
           params: {
+            addToAccount: _this.form.addToAccount,
             paymentId: _this.form.paymentId,
             driverId: _this.form.driverId,
             payment: _this.form.payment,
