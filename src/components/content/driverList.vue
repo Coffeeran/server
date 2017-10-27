@@ -18,12 +18,16 @@
                   size="small"
                 ></el-autocomplete>
               </el-col>
-              <el-col :span="4"><el-input size="small" v-model="phoneNum" placeholder="司机手机"></el-input></el-col>
-              <el-col :span="4"><el-select size="small" clearable v-model="driverStatus" placeholder="司机状态">
+              <el-col :span="4">
+                <el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input>
+              </el-col>
+              <el-col :span="4">
+                <el-select size="small" clearable v-model="driverStatus" placeholder="司机状态">
                 <el-option label="未绑定车辆" value="0"></el-option>
                 <el-option label="正常运营" value="1"></el-option>
                 <el-option label="合作结束" value="2"></el-option>
-              </el-select></el-col>
+              </el-select>
+              </el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="coModelType" placeholder="合作模式">
                 <el-option label="租赁" value="20"></el-option>
                 <el-option label="租购月供" value="30"></el-option>
@@ -40,7 +44,7 @@
             </el-row>
             <el-row :gutter="10">
               <el-col :span="4">
-                <el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input>
+                <el-input size="small" v-model="phoneNum" placeholder="司机手机"></el-input>
               </el-col>
               <el-col :span="4">
                 <el-select size="small" clearable v-model="branch" placeholder="选择城市">

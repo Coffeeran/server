@@ -8,6 +8,16 @@
           </div>
           <div class="ibox-content" style="padding-bottom: 10px">
             <el-row :gutter="10">
+              <el-col :span="4">
+                <el-autocomplete
+                  class="inline-input"
+                  v-model="driverName"
+                  :fetch-suggestions="querySearchAsync"
+                  placeholder="司机姓名"
+                  :trigger-on-focus="false"
+                  size="small"
+                ></el-autocomplete>
+              </el-col>
               <el-col :span="4"><el-input size="small" v-model="plateNum" placeholder="车牌号码"></el-input></el-col>
               <el-col :span="4"><el-input size="small" v-model="carName" placeholder="车辆型号"></el-input></el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="carStatus" placeholder="车辆状态">
@@ -15,12 +25,6 @@
                 <el-option label="已过户" value="2"></el-option>
                 <el-option label="库存中" value="0"></el-option>
               </el-select></el-col>
-              <el-col :span="4">
-                <el-select size="small" clearable v-model="branch" placeholder="选择城市">
-                <el-option label="成都" value="0"></el-option>
-                <el-option label="昆明" value="1"></el-option>
-              </el-select>
-              </el-col>
               <el-col :span="4"><el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
                 <el-option label="违章扣分" value="score"></el-option>
                 <el-option label="违章罚金" value="money"></el-option>
@@ -31,15 +35,10 @@
             </el-row>
             <el-row :gutter="10">
               <el-col :span="4">
-                <el-autocomplete
-                  class="inline-input"
-                  v-model="driverName"
-                  :fetch-suggestions="querySearchAsync"
-                  placeholder="请输入司机姓名"
-                  :trigger-on-focus="false"
-                  size="small"
-                ></el-autocomplete>
-
+                <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                  <el-option label="成都" value="0"></el-option>
+                  <el-option label="昆明" value="1"></el-option>
+                </el-select>
               </el-col>
             </el-row>
           </div>
