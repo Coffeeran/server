@@ -255,7 +255,8 @@
         this.fetchData()
       },
       route (data) {
-        this.$router.push({name: 'period-payment-list', params: {co_model_type: this.coModelType, date: data}})
+        // 不能匹配空参数,所以将branch码直接+1,然后再相应匹配
+        this.$router.push({name: 'period-payment-list', params: {co_model_type: this.coModelType, date: data, branch: this.branch + 1}})
       },
       dateInitial () {
         this.endDate = new Date()

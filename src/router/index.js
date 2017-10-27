@@ -97,7 +97,7 @@ export default new Router({
                   }
                 },
                 {
-                  path: 'period_payment_list/:co_model_type/:date',
+                  path: 'period_payment_list/:co_model_type/:date/branch/:branch',
                   name: 'period-payment-list',
                   component: periodPaymentList,
                   meta: {

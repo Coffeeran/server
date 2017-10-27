@@ -213,6 +213,7 @@
         coModelType: '',
         total: 5,
         driverName: '',
+        branch: '',
         payStatus: 1,
         pageNum: 1,
         pageSize: 10,
@@ -248,6 +249,7 @@
         axios.get('/api/manage/period_payment/list.do',
           {
             params: {
+              branch: this.branch,
               date: this.startDate,
               driverName: this.driverName,
               coModelType: this.coModelType,
@@ -277,7 +279,6 @@
         const _this = this
         axios.get('/api/manage/period_payment/add.do', {
           params: {
-
             driverId: _this.driverId,
             payment: _this.form.payment,
             payer: _this.form.payer,
@@ -339,6 +340,14 @@
       this.startDate = new Date(this.$route.params.date)
       this.form.payTime = new Date(this.$route.params.date)
       this.coModelType = this.$route.params.co_model_type
+      // 由于路由处参数不能为空,所以先+1 现在处理为正确的branch值
+      var branchValue = this.$route.params.branch
+      if (branchValue.length === 1) {
+        this.branch = ''
+      } else if (branchValue.length === 2) {
+        this.branch = branchValue.charAt(1)
+      }
+
       //  todo list日期显示格式
       if (this.coModelType === '30') {
         this.dateType = 'month'
