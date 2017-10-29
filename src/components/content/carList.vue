@@ -137,9 +137,9 @@
               </el-table-column>
               <el-table-column label="操作"
                                fixed="right"
-              width="80">
+              width="100">
                 <template scope="scope">
-                  <el-button @click="toAddOrUpdateCar(scope.row.carId)" :plain="true" size="small" type="info">修改</el-button>
+                  <el-button @click="toAddOrUpdateCar(scope.row.carId)" :plain="true" size="mini" type="info">查看|修改</el-button>
                 </template>
               </el-table-column>
             </el-table>

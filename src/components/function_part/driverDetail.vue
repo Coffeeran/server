@@ -119,15 +119,14 @@
                       <span>余款（元）</span>
                       <strong>{{Number(driverInfo.balance).toLocaleString()}}</strong>
                     </li>
-
+                    <li>
+                      <span>逾期次数</span>
+                      <strong>{{driverInfo.overdueNum}}</strong>
+                    </li>
                     <li>
                       <span>违章情况</span>
                       <strong>{{driverInfo.ticket}}</strong>
 
-                    </li>
-                    <li>
-                      <span>逾期次数</span>
-                      <strong>{{driverInfo.overdueNum}}</strong>
                     </li>
                   </ul>
               </div>

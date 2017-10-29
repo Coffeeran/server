@@ -73,7 +73,8 @@
               style="width: 100%">
               <el-table-column
                 label="日期"
-                width="180">
+                width="170"
+                fixed="left">
                 <template scope="scope">
                   <el-popover trigger="hover" placement="left">
                     <p>{{ scope.row.startDate }} 至 {{scope.row.endDate}}</p>
@@ -122,6 +123,14 @@
                   width="100">
                   <template scope="scope">
                     <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.pinganReceived>0"  color="#FFFFFF">{{Number(scope.row.pinganReceived).toLocaleString()}}</el-tag>
+                    <div v-else>-</div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  label="招商银行"
+                  width="100">
+                  <template scope="scope">
+                    <el-tag style="color: #fd6720; border-color: #fd6720;" v-if="scope.row.cmbReceived>0"  color="#FFFFFF">{{Number(scope.row.cmbReceived).toLocaleString()}}</el-tag>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>

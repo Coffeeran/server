@@ -155,11 +155,9 @@
                 </el-form-item>
                 <el-form-item label="款项渠道" :label-width="formLabelWidth">
                   <el-select v-model="form.payMethod" placeholder="请选择付款方式">
-                    <el-option label="微信" value="2"></el-option>
-                    <el-option label="支付宝" value="1"></el-option>
-                    <el-option label="建设银行" value="3"></el-option>
-                    <el-option label="平安银行" value="4"></el-option>
-                    <el-option label="POS机" value="5"></el-option>
+                    <div v-for="item in payMethodList">
+                      <el-option  :label="item.desc" :value="item.code"></el-option>
+                    </div>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="渠道流水号"  :label-width="formLabelWidth">
@@ -225,7 +223,8 @@
           comment: ''
         },
         paymentDetail: '',
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
+        payMethodList: []
       }
     },
     methods: {
@@ -334,6 +333,12 @@
         const fields = columns.map(t => t.prop)
         const fieldNames = columns.map(t => t.label)
         CsvExport(this.tableData, fields, fieldNames, '列表')
+      },
+      queryPayMethodList () {
+        axios.get('/api/manage/period_payment/payment_method.do').then((res) => {
+          this.payMethodList = res.data.data
+          console.log(res.data.data)
+        })
       }
     },
     created: async function () {
@@ -359,6 +364,7 @@
       this.dateType = 'month'
       this.dateFormat = 'yyyy-MM'
       this.fetchData()
+      this.queryPayMethodList()
     }
   }
 </script>

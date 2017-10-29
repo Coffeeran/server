@@ -132,7 +132,7 @@
               <el-table-column label="操作"
               width="100">
                 <template scope="scope">
-                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">资料修改</el-button>
+                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">查看|修改</el-button>
                 </template>
               </el-table-column>
             </el-table>

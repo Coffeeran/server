@@ -65,11 +65,12 @@
           <div class="ibox-title">
             <el-tabs v-model="activeName" @tab-click="handleClick">
               <el-tab-pane label="全部" name=""></el-tab-pane>
-              <el-tab-pane label="支付宝" name="1"></el-tab-pane>
-              <el-tab-pane label="平安银行" name="4"></el-tab-pane>
-              <el-tab-pane label="建设银行" name="3"></el-tab-pane>
-              <el-tab-pane label="微信" name="2"></el-tab-pane>
-              <el-tab-pane label="POS机" name="5"></el-tab-pane>
+                <el-tab-pane  label="支付宝" name="1"></el-tab-pane>
+                <el-tab-pane  label="微信" name="2"></el-tab-pane>
+                <el-tab-pane  label="建设银行" name="3"></el-tab-pane>
+                <el-tab-pane  label="平安银行" name="4"></el-tab-pane>
+                <el-tab-pane  label="招商银行" name="5"></el-tab-pane>
+                <el-tab-pane  label="POS机" name="6"></el-tab-pane>
             </el-tabs>
           </div>
           <div class="ibox-content" element-loading-text="加载中" style="padding-bottom: 50px">
@@ -124,6 +125,7 @@
                   <el-tag v-if="scope.row.paymentPlatform=='支付宝'" :hit="true" type="primary" color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                   <el-tag v-if="scope.row.paymentPlatform=='建设银行'" :hit="true" type="gray"  color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                   <el-tag v-if="scope.row.paymentPlatform=='平安银行'" style="color: #fd6720; border-color: #fd6720;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
+                  <el-tag v-if="scope.row.paymentPlatform=='招商银行'" style="color: #fd6720; border-color: #fd6720;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                   <el-tag v-if="scope.row.paymentPlatform=='POS机'" style="color: #E9CE46; border-color: #E9CE46;"   color="#FFFFFF">{{ scope.row.paymentPlatform }}</el-tag>
                 </template>
               </el-table-column>
@@ -190,18 +192,16 @@
                     @select="handleSelect"
                   ></el-autocomplete>
                   {{idNum}}
-                  <el-checkbox v-model="form.addToAccount" size="small">常用</el-checkbox>
+                  <el-checkbox v-if="form.driverId !== ''" v-model="form.addToAccount" size="small">常用</el-checkbox>
                 </el-form-item>
                 <el-form-item label="款项金额"  :label-width="formLabelWidth">
                   <el-input v-model="form.payment" size="small" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="款项渠道" :label-width="formLabelWidth">
                   <el-select v-model="form.payMethod" placeholder="请选择付款方式">
-                    <el-option label="微信" value="2"></el-option>
-                    <el-option label="支付宝" value="1"></el-option>
-                    <el-option label="建设银行" value="3"></el-option>
-                    <el-option label="平安银行" value="4"></el-option>
-                    <el-option label="POS机" value="5"></el-option>
+                    <div v-for="item in payMethodList">
+                      <el-option  :label="item.desc" :value="item.code"></el-option>
+                    </div>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="渠道流水号"  :label-width="formLabelWidth">
@@ -263,7 +263,8 @@
           comment: ''
         },
         idNum: '',
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
+        payMethodList: []
       }
     },
     methods: {
@@ -467,6 +468,11 @@
       handleSelect (item) {
         this.idNum = item.idNum
         this.form.driverId = item.driverId
+      },
+      queryPayMethodList () {
+        axios.get('/api/manage/period_payment/payment_method.do').then((res) => {
+          this.payMethodList = res.data.data
+        })
       }
     },
     watch: {
@@ -489,8 +495,9 @@
         return false
       }
     },
-    mounted () {
+    created () {
       this.fetchData()
+      this.queryPayMethodList()
     }
   }
 </script>
