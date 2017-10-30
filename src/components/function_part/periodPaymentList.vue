@@ -77,7 +77,7 @@
                 >
                 <template scope="scope">
                   {{scope.row.dueAmount}}
-                  <!--<small v-if="coModelType==30">&#45;&#45;{{scope.row.planDetailVo.planStartDate}}</small>-->
+                  <small v-if="scope.row.dueDate">-{{scope.row.dueDate}}日</small>
                 </template>
               </el-table-column>
               <el-table-column

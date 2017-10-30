@@ -35,7 +35,7 @@
             </el-row>
             <el-row :gutter="10">
               <el-col :span="4">
-                <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                <el-select :disabled="branchAble" size="small" clearable v-model="branch" placeholder="选择城市">
                   <el-option label="成都" value="0"></el-option>
                   <el-option label="昆明" value="1"></el-option>
                 </el-select>
@@ -173,6 +173,7 @@
         activeName: 'first',
         carName: '',
         branch: '',
+        branchAble: true,
         carStatus: '',
         orderBy: '',
         tableData: [],
@@ -248,6 +249,13 @@
       }
     },
     created: async function () {
+      if (this.userBranch === 0) {
+        this.branch = '0'
+      } else if (this.userBranch === 1) {
+        this.branch = '1'
+      } else if (this.userBranch === -1) {
+        this.branchAble = false
+      }
       this.fetchData()
     }
   }

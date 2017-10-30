@@ -36,7 +36,7 @@
               </el-col>
               <el-col :span="16">
                 <el-col >
-                  <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                  <el-select :disabled="branchAble" size="small" clearable v-model="branch" placeholder="选择城市">
                     <el-option label="成都" value="0"></el-option>
                     <el-option label="昆明" value="1"></el-option>
                   </el-select>
@@ -206,6 +206,7 @@
         pageNum: 1,
         pageSize: 10,
         branch: '',
+        branchAble: true,
         datePicker: {
           type: 'week',
           format: 'yyyy-MM-dd 第 WW 周'
@@ -273,9 +274,14 @@
         this.startDate.setTime(this.startDate.getTime() - 3600 * 1000 * 24 * 7 * 5)
       }
     },
-    watch: {
-    },
-    created: async function () {
+    created () {
+      if (this.userBranch === 0) {
+        this.branch = '0'
+      } else if (this.userBranch === 1) {
+        this.branch = '1'
+      } else if (this.userBranch === -1) {
+        this.branchAble = false
+      }
       this.dateInitial()
       this.fetchData()
     }

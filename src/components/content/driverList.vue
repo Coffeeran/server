@@ -47,7 +47,7 @@
                 <el-input size="small" v-model="phoneNum" placeholder="司机手机"></el-input>
               </el-col>
               <el-col :span="4">
-                <el-select size="small" clearable v-model="branch" placeholder="选择城市">
+                <el-select :disabled="branchAble" size="small" clearable v-model="branch" placeholder="选择城市">
                   <el-option label="成都" value="0"></el-option>
                   <el-option label="昆明" value="1"></el-option>
                 </el-select>
@@ -169,6 +169,7 @@ export default {
       driverStatus: '',
       coModelType: '',
       branch: '',
+      branchAble: true,
       tableData: [],
       isLoading: false
     }
@@ -247,6 +248,13 @@ export default {
     }
   },
   created: async function () {
+    if (this.userBranch === 0) {
+      this.branch = '0'
+    } else if (this.userBranch === 1) {
+      this.branch = '1'
+    } else if (this.userBranch === -1) {
+      this.branchAble = false
+    }
     this.fetchData()
   }
 }

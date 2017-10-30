@@ -10,18 +10,12 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  render: h => h(App),
-  template: '<App/>',
-  components: { App }
-})
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) {
     axios.post('/api/user/get_user_info.do').then(function (res) {
       if (res.data.status === 0) {
+        Vue.prototype.userBranch = res.data.data.branch
         next()
       } else {
         next({
@@ -32,4 +26,11 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+new Vue({
+  el: '#app',
+  router,
+  render: h => h(App),
+  template: '<App/>',
+  components: { App }
 })
