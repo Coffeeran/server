@@ -192,7 +192,6 @@
                     @select="handleSelect"
                   ></el-autocomplete>
                   {{idNum}}
-                  <el-checkbox v-if="form.driverId !== ''" v-model="form.addToAccount" size="small">常用</el-checkbox>
                 </el-form-item>
                 <el-form-item label="款项金额"  :label-width="formLabelWidth">
                   <el-input v-model="form.payment" size="small" auto-complete="off"></el-input>
@@ -253,10 +252,10 @@
         selection: [],
         form: {
           id: '',
-          addToAccount: false,
           driverName: '',
           driverId: '',
           payer: '',
+          accountNum: '',
           payTime: '',
           payMethod: '',
           platformNum: '',
@@ -264,7 +263,8 @@
         },
         idNum: '',
         formLabelWidth: '120px',
-        payMethodList: []
+        payMethodList: [],
+        addToAccount: false
       }
     },
     methods: {
@@ -301,6 +301,7 @@
         this.form.paymentId = row.id
         this.form.payer = row.payer
         this.form.payment = row.paymentAmount
+        this.form.accountNum = row.accountNum
         this.form.payMethod = row.paymentPlatformCode
         this.form.platformNum = row.platformNum
         this.form.payTime = new Date(row.periodTime)
@@ -310,12 +311,13 @@
         const _this = this
         axios.get('/api/manage/period_payment/add.do', {
           params: {
-            addToAccount: _this.form.addToAccount,
+            addToAccount: _this.addToAccount,
             paymentId: _this.form.paymentId,
             driverId: _this.form.driverId,
             payment: _this.form.payment,
             payer: _this.form.payer,
             paymentPlatform: _this.form.payMethod,
+            accountNum: _this.form.accountNum,
             payTime: _this.form.payTime.getTime(),
             platformNum: _this.form.platformNum,
             comment: _this.form.comment
@@ -484,7 +486,27 @@
           this.idNum = ''
           this.form.driverName = ''
           this.form.driverId = ''
+          this.form.accountNum = ''
         }
+      },
+      'form.driverId' (val) {
+        console.log(val)
+        if (val !== '' && val !== null && this.form.accountNum !== '') {
+          this.addToAccount = true
+        } else {
+          this.addToAccount = false
+        }
+      },
+      'form.accountNum' (val) {
+        console.log(val)
+        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null) {
+          this.addToAccount = true
+        } else {
+          this.addToAccount = false
+        }
+      },
+      addToAccount (val) {
+        console.log(val)
       }
     },
     computed: {
