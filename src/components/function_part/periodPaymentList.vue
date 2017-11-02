@@ -337,7 +337,6 @@
       queryPayMethodList () {
         axios.get('/api/manage/period_payment/payment_method.do').then((res) => {
           this.payMethodList = res.data.data
-          console.log(res.data.data)
         })
       }
     },
@@ -350,7 +349,7 @@
       if (branchValue.length === 1) {
         this.branch = ''
       } else if (branchValue.length === 2) {
-        this.branch = branchValue.charAt(1)
+        this.branch = branchValue.charAt(0)
       }
 
       //  todo list日期显示格式
