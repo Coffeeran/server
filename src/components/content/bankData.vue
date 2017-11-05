@@ -24,7 +24,7 @@
             </el-row>
             <el-row :gutter="10" >
               <el-col :span="6" v-for="(balance,index) in balanceList" style="margin-bottom: 10px">
-                <el-card :body-style="{ padding: '0px' }" :style="balance.amount==0?'background-color: #ffeaea;':''" v-loading="balance.isLoading">
+                <el-card :body-style="{ padding: '0px' }" :style="balance.amount==0?'background-color: #ffeaea;':''" v-loading="balanceList[index].isLoading">
                   <div style="padding: 14px;">
                     <span>{{balance.acctName}}</span><small class="pull-right" style="font-size: 15px;color:#878D99">{{balance.acctNo}}</small>
                     <div class="detail">
@@ -78,7 +78,9 @@ export default {
         })
     },
     refreshPinganBalance (agreementNum, index) {
-      this.balanceList[index].isLoading = true
+//      this.$set(this.balanceList[index], 'isLoading', true)
+      this.balanceList[index].balance = '更新中..'
+      this.balanceList[index].updateTime = '更新中..'
       axios.get('/api/manage/bank_info/refresh_pingan_balance.do',
         {
           params: {
@@ -86,9 +88,14 @@ export default {
             agreementNo: agreementNum
           }
         }).then((res) => {
-          this.balanceList[index].balance = res.data.data.balance
-          this.balanceList[index].updateTime = res.data.data.updateTime
-          this.balanceList[index].isLoading = false
+          if (res.data.status === 0) {
+            this.balanceList[index].balance = res.data.data.balance
+            this.balanceList[index].updateTime = res.data.data.updateTime
+          } else if (res.data.status === 1) {
+            this.balanceList[index].balance = '更新失败,勿同时更新'
+            this.balanceList[index].updateTime = '更新失败,勿同时更新'
+          }
+//          this.$set(this.balanceList[index], 'isLoading', false)
         })
     }
   },
