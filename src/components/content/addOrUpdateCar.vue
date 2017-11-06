@@ -183,21 +183,13 @@ export default {
           }
         }).then(function (res) {
           if (res.data.status === 0) {
-            _this.message(res.data.msg, true)
-            _this.$router.push({path: '/basic/car_list'})
+            this.message(res.data.msg, true)
+            this.$router.push({path: '/basic/car_list'})
           } else if (res.data.status === 1) {
-            _this.message(res.data.msg, false)
+            this.message(res.data.msg, false)
           }
           _this.isLoading = false
         })
-    },
-    message (msg, success) {
-      this.$notify({
-        title: success ? '成功' : '错误',
-        message: msg,
-        offset: 100,
-        type: success ? 'success' : 'warning'
-      })
     }
   },
   mounted () {

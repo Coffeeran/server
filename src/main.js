@@ -27,6 +27,35 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
+
+Vue.prototype.message = function (msg, success) {
+  this.$notify({
+    title: success ? '成功' : '错误',
+    message: msg,
+    offset: 100,
+    type: success ? 'success' : 'warning'
+  })
+}
+
+Vue.prototype.by = function (name) {
+  return function (o, p) {
+    var a, b
+    if (typeof o === 'object' && typeof p === 'object' && o && p) {
+      a = o[name]
+      b = p[name]
+      if (a === b) {
+        return 0
+      }
+      if (typeof a === typeof b) {
+        return a < b ? -1 : 1
+      }
+      return typeof a < typeof b ? -1 : 1
+    } else {
+      return null
+    }
+  }
+}
+
 new Vue({
   el: '#app',
   router,
