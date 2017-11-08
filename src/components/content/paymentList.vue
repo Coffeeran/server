@@ -112,9 +112,9 @@
                 label="款项金额"
                 width="100">
               </el-table-column>
-              <el-table-column label="付款人" width="90">
+              <el-table-column label="付款人" width="160">
                 <template scope="scope">
-                  <small style="margin-left: 10px">{{ scope.row.payer }}</small>
+                  <small style="margin-left: 10px;font-size: 10px">{{ scope.row.payer }}</small>
                 </template>
               </el-table-column>
               <el-table-column
@@ -309,6 +309,10 @@
       },
       handleAddPayment () {
         const _this = this
+        if ((this.form.driverId === '' || this.form.driverId === null) && this.form.driverName !== '') {
+          this.message('系统中未查询到该名司机,请再次确认', false)
+          return
+        }
         axios.get('/api/manage/period_payment/add.do', {
           params: {
             addToAccount: _this.addToAccount,
@@ -491,16 +495,14 @@
         }
       },
       'form.driverId' (val) {
-        console.log(val)
-        if (val !== '' && val !== null && this.form.accountNum !== '') {
+        if (val !== '' && val !== null && this.form.accountNum !== '' && this.form.payer.indexOf('支付宝转入') === -1) {
           this.addToAccount = true
         } else {
           this.addToAccount = false
         }
       },
       'form.accountNum' (val) {
-        console.log(val)
-        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null) {
+        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null && this.form.payer.indexOf('支付宝转入') === -1) {
           this.addToAccount = true
         } else {
           this.addToAccount = false
