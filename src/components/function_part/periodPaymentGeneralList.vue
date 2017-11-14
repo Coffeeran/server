@@ -269,9 +269,24 @@
         this.$router.push({name: 'period-payment-list', params: {co_model_type: this.coModelType, date: data, branch: this.branch + 1}})
       },
       dateInitial () {
-        this.endDate = new Date()
-        this.startDate = new Date()
-        this.startDate.setTime(this.startDate.getTime() - 3600 * 1000 * 24 * 7 * 5)
+        console.log(sessionStorage.getItem('startDate'))
+        console.log(sessionStorage.getItem('endDate'))
+        if (sessionStorage.getItem('startDate') === null || sessionStorage.getItem('endDate') === null) {
+          this.endDate = new Date()
+          this.startDate = new Date()
+          this.startDate.setTime(this.startDate.getTime() - 3600 * 1000 * 24 * 7 * 5)
+        } else {
+          this.endDate = new Date(parseInt(sessionStorage.getItem('endDate')))
+          this.startDate = new Date(parseInt(sessionStorage.getItem('startDate')))
+        }
+      }
+    },
+    watch: {
+      startDate (val) {
+        sessionStorage.setItem('startDate', val.getTime())
+      },
+      endDate (val) {
+        sessionStorage.setItem('endDate', val.getTime())
       }
     },
     created () {
