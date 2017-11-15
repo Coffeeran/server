@@ -144,10 +144,9 @@
 
               </el-table-column>
               <el-table-column
-                label="差额" width="110">
+                label="已收总额" width="110">
                 <template scope="scope">
-                  <el-tag type="danger" :close-transition="true" :hit="true" color="#FFFFFF" v-if="scope.row.difference>0">{{Number(scope.row.difference).toLocaleString()}}</el-tag>
-                  <el-tag type="success" :close-transition="true" color="#FFFFFF" v-if="scope.row.difference<=0">{{Number(scope.row.difference).toLocaleString()}}<el-icon name="check"></el-icon></el-tag>
+                  <el-tag type="danger" :close-transition="true" :hit="true" color="#FFFFFF" v-if="scope.row.amountReceived>0">{{Number(scope.row.amountReceived).toLocaleString()}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column
@@ -269,8 +268,6 @@
         this.$router.push({name: 'period-payment-list', params: {co_model_type: this.coModelType, date: data, branch: this.branch + 1}})
       },
       dateInitial () {
-        console.log(sessionStorage.getItem('startDate'))
-        console.log(sessionStorage.getItem('endDate'))
         if (sessionStorage.getItem('startDate') === null || sessionStorage.getItem('endDate') === null) {
           this.endDate = new Date()
           this.startDate = new Date()

@@ -492,22 +492,18 @@
       },
       'form.driverId' (val) {
         console.log(val)
-        if (val !== '' && val !== null && this.form.accountNum !== '') {
+        if (val !== '' && val !== null && this.form.accountNum !== '' && this.form.payer.indexOf('支付宝') === -1) {
           this.addToAccount = true
         } else {
           this.addToAccount = false
         }
       },
       'form.accountNum' (val) {
-        console.log(val)
-        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null) {
+        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null && this.form.payer.indexOf('支付宝') === -1) {
           this.addToAccount = true
         } else {
           this.addToAccount = false
         }
-      },
-      addToAccount (val) {
-        console.log(val)
       }
     },
     computed: {
