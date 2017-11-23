@@ -491,18 +491,23 @@
         }
       },
       'form.driverId' (val) {
-        if (val !== '' && val !== null && this.form.accountNum !== '' && this.form.payer.indexOf('支付宝') === -1) {
+        console.log(val)
+        if (val !== '' && val !== null && this.form.accountNum !== '') {
           this.addToAccount = true
         } else {
           this.addToAccount = false
         }
       },
       'form.accountNum' (val) {
-        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null && this.form.payer.indexOf('支付宝') === -1) {
+        console.log(val)
+        if (val !== '' && this.form.driverId !== '' && this.form.driverId !== null) {
           this.addToAccount = true
         } else {
           this.addToAccount = false
         }
+      },
+      addToAccount (val) {
+        console.log(val)
       }
     },
     computed: {

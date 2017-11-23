@@ -39,7 +39,8 @@
                     <div class="detail">
 
                       <p></p>
-                      <span style="font-size: 18px;color:#67C23A"><small style="font-size: 10px;padding-right: 10px;color:#668b6d;">余额</small>{{balance.balance}}</span>
+                      <span style="font-size: 18px;color:#67C23A" v-if="!balance.isLoading"><small style="font-size: 10px;padding-right: 10px;color:#668b6d;">余额</small>{{balance.balance}}</span>
+                      <span style="font-size: 18px;color:#67C23A" v-if="balance.isLoading">更新中..</span>
                       <span style="float:right;color:#878D99"><small style="font-size: 10px;padding-right: 5px;">本周已扣</small>{{balance.amount}}</span>
                     </div>
                     <div class="bottom clearfix">
@@ -94,9 +95,7 @@ export default {
         })
     },
     refreshPinganBalance (index) {
-//      this.$set(this.balanceList[index], 'isLoading', true)
-      this.balanceList[index].balance = '更新中..'
-      this.balanceList[index].updateTime = '更新中..'
+      this.$set(this.balanceList[index], 'isLoading', true)
       return axios.get('/api/manage/bank_info/refresh_pingan_balance.do',
         {
           params: {
@@ -110,7 +109,7 @@ export default {
           } else if (res.data.status === 1) {
             this.balanceList[index].balance = this.balanceList[index].balance + '-更新失败'
           }
-//          this.$set(this.balanceList[index], 'isLoading', false)
+          this.$set(this.balanceList[index], 'isLoading', false)
         })
     },
     sortList (name) {
@@ -128,6 +127,7 @@ export default {
           await this.refreshPinganBalance(i)
         }
       }
+      this.isRefreshing = false
     }
   },
   watch: {
