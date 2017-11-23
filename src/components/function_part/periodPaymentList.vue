@@ -119,8 +119,8 @@
                 label="付款状态"
                 align="center">
                 <template scope="scope">
-                  <el-icon style="color: #ff4949;" v-if="scope.row.dueAmount-scope.row.confirmedPayment>0" name="close"></el-icon>
-                  <el-icon style="color: #20a0ff;" v-if="scope.row.dueAmount-scope.row.confirmedPayment<=0" name="check"></el-icon>
+                  <el-icon style="color: #ff4949;" v-if="scope.row.dueAmount-scope.row.confirmedPayment>1" name="close"></el-icon>
+                  <el-icon style="color: #20a0ff;" v-if="scope.row.dueAmount-scope.row.confirmedPayment<=1" name="check"></el-icon>
                 </template>
               </el-table-column>
               <el-table-column
