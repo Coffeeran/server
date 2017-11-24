@@ -248,6 +248,23 @@
         this.driverName = ''
       }
     },
+    watch: {
+      driverName (val) {
+        sessionStorage.setItem('driverName', val)
+      },
+      orderBy (val) {
+        sessionStorage.setItem('orderBy', val)
+      },
+      plateNum (val) {
+        sessionStorage.setItem('plateNum', val)
+      },
+      pageNum (val) {
+        sessionStorage.setItem('pageNum', val)
+      },
+      pageSize (val) {
+        sessionStorage.setItem('pageSize', val)
+      }
+    },
     created: async function () {
       if (this.userBranch === 0) {
         this.branch = '0'
@@ -256,6 +273,11 @@
       } else if (this.userBranch === -1) {
         this.branchAble = false
       }
+      this.driverName = sessionStorage.getItem('driverName') === null ? '' : sessionStorage.getItem('driverName')
+      this.orderBy = sessionStorage.getItem('orderBy') === null ? '' : sessionStorage.getItem('orderBy')
+      this.plateNum = sessionStorage.getItem('plateNum') === null ? '' : sessionStorage.getItem('plateNum')
+      this.pageNum = sessionStorage.getItem('pageNum') === null ? '' : sessionStorage.getItem('pageNum')
+      this.pageSize = sessionStorage.getItem('pageSize') === null ? '' : sessionStorage.getItem('pageSize')
       this.fetchData()
     }
   }

@@ -5,7 +5,8 @@
         <div class="ibox float-e-margins">
           <div class="ibox-title">
             司机信息
-            <el-switch class="pull-right" v-model="disableDriverInfo" on-color="#ff4949" on-text="编辑" off-text="关闭"></el-switch>
+            <el-switch class="pull-right" v-model="disableDriverInfo" on-color="#ff4949" on-text="编辑"
+                       off-text="关闭"></el-switch>
           </div>
           <div class="ibox-content" style="padding-bottom: 5px;" v-loading="isLoading" element-loading-text="加载中">
             <el-form
@@ -43,7 +44,8 @@
             </el-form>
           </div>
           <div class="ibox-footer">
-            <el-button :disabled="disableDriverInfo" @click="addOrUpdateDriverInfo" size="small" type="primary">提交</el-button>
+            <el-button :disabled="disableDriverInfo" @click="addOrUpdateDriverInfo" size="small" type="primary">提交
+            </el-button>
           </div>
         </div>
       </div>
@@ -53,10 +55,11 @@
         <div class="ibox float-e-margins">
           <div class="ibox-title">
             合作模式
-            <el-switch class="pull-right" v-model="disableCoModel" on-color="#ff4949" on-text="编辑" off-text="关闭"></el-switch>
+            <el-switch class="pull-right" v-model="disableCoModel" on-color="#ff4949" on-text="编辑"
+                       off-text="关闭"></el-switch>
           </div>
           <div class="ibox-content" style="padding-bottom: 5px;" v-loading="isLoading" element-loading-text="加载中">
-            <el-form :model="coModelForm" :rules="coModelRules"  label-width="100px" class="demo-ruleForm">
+            <el-form :model="coModelForm" :rules="coModelRules" label-width="100px" class="demo-ruleForm">
               <el-form-item label="合作模式">
                 <el-select :disabled="disableCoModel" size="small" v-model="coModelForm.modelType">
                   <el-option label="全款" value="10"></el-option>
@@ -98,7 +101,8 @@
               </el-form-item>
               <el-form-item v-if="coModelForm.modelType!='10'" label="付款月数" prop="periodNum">
                 <el-col :span="10">
-                  <el-input-number :disabled="disableCoModel" size="small" :min="0" :max="36" v-model="coModelForm.periodNum"></el-input-number>
+                  <el-input-number :disabled="disableCoModel" size="small" :min="0" :max="36"
+                                   v-model="coModelForm.periodNum"></el-input-number>
                 </el-col>
               </el-form-item>
               <el-form-item v-if="coModelForm.modelType!='10'" label="付款起始日期">
@@ -140,7 +144,8 @@
         <div class="ibox float-e-margins">
           <div class="ibox-title">
             绑定车辆
-            <el-switch class="pull-right" v-model="disableCarInfo" on-color="#ff4949" on-text="编辑" off-text="关闭"></el-switch>
+            <el-switch class="pull-right" v-model="disableCarInfo" on-color="#ff4949" on-text="编辑"
+                       off-text="关闭"></el-switch>
           </div>
           <div class="ibox-content" style="padding-bottom: 10px;" v-loading="carListIsLoading"
                element-loading-text="加载中">
@@ -242,6 +247,7 @@
 
 <script>
   import axios from 'axios'
+
   export default {
     data () {
       return {
@@ -266,16 +272,16 @@
         },
         rules: {
           driverName: [
-            { required: true, message: '请输入司机姓名', trigger: 'blur' },
-            { min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur' }
+            {required: true, message: '请输入司机姓名', trigger: 'blur'},
+            {min: 1, max: 5, message: '长度在 1 到 5 个字符', trigger: 'blur'}
           ],
           idNum: [
-            { required: true, message: '请输入身份证号码', trigger: 'blur' },
-            { min: 18, max: 18, message: '请输入正确的格式', trigger: 'blur' }
+            {required: true, message: '请输入身份证号码', trigger: 'blur'},
+            {min: 18, max: 18, message: '请输入正确的格式', trigger: 'blur'}
           ],
           phoneNum: [
-            { required: true, message: '请输入手机号码', trigger: 'blur' },
-            { min: 11, max: 11, message: '请输入正确的格式', trigger: 'blur' }
+            {required: true, message: '请输入手机号码', trigger: 'blur'},
+            {min: 11, max: 11, message: '请输入正确的格式', trigger: 'blur'}
           ]
         },
         plateNum: '',
@@ -302,16 +308,16 @@
         },
         coModelRules: {
           downAmount: [
-            { required: true, message: '请输入首付金额', trigger: 'blur' }
+            {required: true, message: '请输入首付金额', trigger: 'blur'}
           ],
           totalAmount: [
-            { required: true, message: '请输入总计金额', trigger: 'blur' }
+            {required: true, message: '请输入总计金额', trigger: 'blur'}
           ],
           finalAmount: [
-            { required: true, message: '请输入尾款金额', trigger: 'blur' }
+            {required: true, message: '请输入尾款金额', trigger: 'blur'}
           ],
           periodNum: [
-            { required: true, type: 'number', message: '请输入月数', trigger: 'blur' }
+            {required: true, type: 'number', message: '请输入月数', trigger: 'blur'}
           ]
         }
       }
@@ -463,7 +469,7 @@
             totalAmount: _this.coModelForm.totalAmount,
             downAmount: _this.coModelForm.downAmount,
             finalAmount: _this.coModelForm.finalAmount,
-            periodPlanStartDate: new Date(_this.coModelForm.periodPlanStartDate).getTime(),
+            periodPlanStartDate: _this.coModelForm.modelType === '10' ? null : new Date(_this.coModelForm.periodPlanStartDate).getTime(),
             periodNum: _this.coModelForm.periodNum,
             comment: _this.coModelForm.comment
           }
@@ -535,7 +541,7 @@
 </script>
 
 <style>
-  .el-table__body tr.current-row>td {
+  .el-table__body tr.current-row > td {
     background: #c9e5f5;
   }
 

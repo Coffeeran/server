@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <div class="row" v-cloak >
+    <div class="row" v-cloak>
       <div class="col-sm-12">
         <div class="ibox float-e-margins" style="margin-bottom: 0px">
           <div class="ibox-title">
@@ -23,23 +23,25 @@
               </el-col>
               <el-col :span="4">
                 <el-select size="small" clearable v-model="driverStatus" placeholder="司机状态">
-                <el-option label="未绑定车辆" value="0"></el-option>
-                <el-option label="正常运营" value="1"></el-option>
-                <el-option label="合作结束" value="2"></el-option>
-              </el-select>
+                  <el-option label="未绑定车辆" value="0"></el-option>
+                  <el-option label="正常运营" value="1"></el-option>
+                  <el-option label="合作结束" value="2"></el-option>
+                </el-select>
               </el-col>
-              <el-col :span="4"><el-select size="small" clearable v-model="coModelType" placeholder="合作模式">
-                <el-option label="租赁" value="20"></el-option>
-                <el-option label="租购月供" value="30"></el-option>
-                <el-option label="租购周供" value="40"></el-option>
-                <el-option label="全款" value="10"></el-option>
-              </el-select></el-col>
+              <el-col :span="4">
+                <el-select size="small" clearable v-model="coModelType" placeholder="合作模式">
+                  <el-option label="租赁" value="20"></el-option>
+                  <el-option label="租购月供" value="30"></el-option>
+                  <el-option label="租购周供" value="40"></el-option>
+                  <el-option label="全款" value="10"></el-option>
+                </el-select>
+              </el-col>
               <el-col :span="4">
                 <el-select size="small" clearable v-model="orderBy" placeholder="排序方式">
-                <el-option label="违章扣分" value="score"></el-option>
-                <el-option label="违章罚金" value="money"></el-option>
-                <el-option label="加入时间" value="startDate"></el-option>
-              </el-select>
+                  <el-option label="违章扣分" value="score"></el-option>
+                  <el-option label="违章罚金" value="money"></el-option>
+                  <el-option label="加入时间" value="startDate"></el-option>
+                </el-select>
               </el-col>
             </el-row>
             <el-row :gutter="10">
@@ -55,9 +57,11 @@
             </el-row>
           </div>
           <div class="ibox-footer">
-            <el-button  icon="search" size="small" @click="query">查询</el-button>
+            <el-button icon="search" size="small" @click="query">查询</el-button>
             <el-button :plain="true" @click="reset" type="warning" icon="delete2" size="small">重置</el-button>
-            <el-button type="info" size="small" class="pull-right" @click="toAddOrUpdateDriver(0)" >新增司机<el-icon name="plus"></el-icon></el-button>
+            <el-button type="info" size="small" class="pull-right" @click="toAddOrUpdateDriver(0)">新增司机
+              <el-icon name="plus"></el-icon>
+            </el-button>
           </div>
         </div>
       </div>
@@ -99,7 +103,7 @@
                 label="合作模式"
                 width="120">
                 <template scope="scope">
-                  <small >{{ scope.row.coModelType }}</small>
+                  <small>{{ scope.row.coModelType }}</small>
                 </template>
               </el-table-column>
               <el-table-column
@@ -109,13 +113,13 @@
                   <span>
                     <el-tag v-if="scope.row.driverStatus=='正常运营'" type="primary">{{scope.row.driverStatus}}</el-tag>
                     <el-tag v-if="scope.row.driverStatus=='合作结束'" type="danger">{{scope.row.driverStatus}}</el-tag>
-                    <el-tag v-if="scope.row.driverStatus=='未绑定车辆'" >{{scope.row.driverStatus}}</el-tag>
+                    <el-tag v-if="scope.row.driverStatus=='未绑定车辆'">{{scope.row.driverStatus}}</el-tag>
                   </span>
                 </template>
               </el-table-column>
               <el-table-column label="车牌号-车型" width="250">
                 <template scope="scope">
-                  <span style="margin-left: 10px"><el-tag>{{ scope.row.plateNum }}-{{scope.row.carName}}</el-tag></span>
+                  <el-tag @click.native="toAddOrUpdateCar(scope.row.carId)">{{ scope.row.plateNum }}-{{scope.row.carName}}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column label="加入时间" width="140">
@@ -130,9 +134,11 @@
                 </template>
               </el-table-column>
               <el-table-column label="操作"
-              width="100">
+                               width="100">
                 <template scope="scope">
-                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">查看|修改</el-button>
+                  <el-button @click="toAddOrUpdateDriver(scope.row.driverId)" :plain="true" size="mini" type="info">
+                    查看|修改
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -154,32 +160,32 @@
 </template>
 
 <script>
-import axios from 'axios'
-export default {
-  data () {
-    return {
-      total: 5,
-      pageNum: 1,
-      pageSize: 10,
-      activeName: 'first',
-      plateNum: '',
-      driverName: '',
-      orderBy: '',
-      phoneNum: '',
-      driverStatus: '',
-      coModelType: '',
-      branch: '',
-      branchAble: true,
-      tableData: [],
-      isLoading: false
-    }
-  },
-  methods: {
-    fetchData () {
-      const _this = this
-      this.isLoading = true
-      axios.get('/api/manage/driver/list.do',
-        {
+  import axios from 'axios'
+
+  export default {
+    data () {
+      return {
+        total: Number,
+        pageNum: Number,
+        pageSize: Number,
+        activeName: 'first',
+        plateNum: '',
+        driverName: '',
+        orderBy: '',
+        phoneNum: '',
+        driverStatus: '',
+        coModelType: '',
+        branch: '',
+        branchAble: true,
+        tableData: [],
+        isLoading: false
+      }
+    },
+    methods: {
+      fetchData () {
+        const _this = this
+        this.isLoading = true
+        axios.get('/api/manage/driver/list.do', {
           params: {
             branch: this.branch,
             orderBy: this.orderBy,
@@ -200,64 +206,101 @@ export default {
             _this.$router.push({name: 'login'})
           }
         })
-    },
-    toDriverDetail (driverId) {
-      this.$router.push({name: 'driver-detail', params: {id: driverId}})
-    },
-    toAddOrUpdateDriver (driverId) {
-      this.$router.push({name: 'add-or-update-driver', params: {id: driverId}})
-    },
-    query () {
-      this.pageNum = 1
-      this.pageSize = 10
-      this.fetchData()
-    },
-    handleSizeChange (val) {
-      this.pageSize = val
-      this.fetchData()
-    },
-    handleCurrentChange (val) {
-      this.pageNum = val
-      this.fetchData()
-    },
-    querySearchAsync (queryString, cb) {
-      const _this = this
-      axios.get('api/manage/driver/name_list.do', {
-        params: {
-          driverName: queryString
+      },
+      toDriverDetail (driverId) {
+        this.$router.push({name: 'driver-detail', params: {id: driverId}})
+      },
+      toAddOrUpdateDriver (driverId) {
+        this.$router.push({name: 'add-or-update-driver', params: {id: driverId}})
+      },
+      toAddOrUpdateCar (carId) {
+        this.$router.push({name: 'add-or-update-car', params: {id: carId}})
+      },
+      query () {
+        this.pageNum = 1
+        this.pageSize = 10
+        this.fetchData()
+      },
+      handleSizeChange (val) {
+        this.pageSize = val
+        this.fetchData()
+      },
+      handleCurrentChange (val) {
+        this.pageNum = val
+        this.fetchData()
+      },
+      querySearchAsync (queryString, cb) {
+        const _this = this
+        axios.get('api/manage/driver/name_list.do', {
+          params: {
+            driverName: queryString
+          }
+        }).then(function (res) {
+          var driverList = res.data.data
+          var results = queryString ? driverList.filter(_this.createFilter(queryString)) : driverList
+          // 调用 callback 返回建议列表的数据
+          cb(results)
+        })
+      },
+      createFilter (queryString) {
+        return (driver) => {
+          return (driver.value.indexOf(queryString.toLowerCase()) === 0)
         }
-      }).then(function (res) {
-        var driverList = res.data.data
-        var results = queryString ? driverList.filter(_this.createFilter(queryString)) : driverList
-        // 调用 callback 返回建议列表的数据
-        cb(results)
-      })
-    },
-    createFilter (queryString) {
-      return (driver) => {
-        return (driver.value.indexOf(queryString.toLowerCase()) === 0)
+      },
+      reset () {
+        this.driverName = ''
+        this.phoneNum = ''
+        this.driverStatus = ''
+        this.coModelType = ''
+        this.orderBy = ''
+        this.plateNum = ''
       }
     },
-    reset () {
-      this.driverName = ''
-      this.phoneNum = ''
-      this.driverStatus = ''
-      this.coModelType = ''
-      this.orderBy = ''
-      this.plateNum = ''
+    watch: {
+      driverName (val) {
+        sessionStorage.setItem('driverName', val)
+      },
+      phoneNum (val) {
+        sessionStorage.setItem('phoneNum', val)
+      },
+      driverStatus (val) {
+        sessionStorage.setItem('driverStatus', val)
+      },
+      coModelType (val) {
+        sessionStorage.setItem('coModelType', val)
+      },
+      orderBy (val) {
+        sessionStorage.setItem('orderBy', val)
+      },
+      plateNum (val) {
+        sessionStorage.setItem('plateNum', val)
+      },
+      pageNum (val) {
+        sessionStorage.setItem('pageNum', val)
+      },
+      pageSize (val) {
+        sessionStorage.setItem('pageSize', val)
+      }
+    },
+    created: async function () {
+      if (this.userBranch === 0) {
+        this.branch = '0'
+      } else if (this.userBranch === 1) {
+        this.branch = '1'
+      } else if (this.userBranch === -1) {
+        this.branchAble = false
+      }
+      this.driverName = sessionStorage.getItem('driverName') === null ? '' : sessionStorage.getItem('driverName')
+      this.phoneNum = sessionStorage.getItem('phoneNum') === null ? '' : sessionStorage.getItem('phoneNum')
+      this.driverStatus = sessionStorage.getItem('driverStatus') === null ? '' : sessionStorage.getItem('driverStatus')
+      this.coModelType = sessionStorage.getItem('coModelType') === null ? '' : sessionStorage.getItem('coModelType')
+      this.orderBy = sessionStorage.getItem('orderBy') === null ? '' : sessionStorage.getItem('orderBy')
+      this.plateNum = sessionStorage.getItem('plateNum') === null ? '' : sessionStorage.getItem('plateNum')
+      this.pageNum = sessionStorage.getItem('pageNum') === null ? '' : sessionStorage.getItem('pageNum')
+      this.pageSize = sessionStorage.getItem('pageSize') === null ? '' : sessionStorage.getItem('pageSize')
+      this.fetchData()
     }
-  },
-  created: async function () {
-    if (this.userBranch === 0) {
-      this.branch = '0'
-    } else if (this.userBranch === 1) {
-      this.branch = '1'
-    } else if (this.userBranch === -1) {
-      this.branchAble = false
-    }
-    this.fetchData()
   }
-}
 </script>
 <style>
 
@@ -267,17 +310,22 @@ export default {
 
   .el-row {
     margin-bottom: 10px;
-    &:last-child {
-     margin-bottom: 0;
-   }
+
+  &
+  :last-child {
+    margin-bottom: 0;
+  }
+
   }
   .el-col {
     border-radius: 4px;
   }
+
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
   }
+
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
