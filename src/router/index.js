@@ -5,7 +5,7 @@ import sideNavBasic from '@/components/side_nav/sideNavBasic'
 import sideNavConsole from '@/components/side_nav/sideNavConsole'
 import sideNavOrder from '@/components/side_nav/sideNavOrder'
 import sideNavUser from '@/components/side_nav/sideNavUser'
-import positionMonitor from '@/components/content/positionMonitor'
+import dataReport from '@/components/content/dataReport'
 import bankData from '@/components/content/bankData'
 import carList from '@/components/content/carList'
 import driverList from '@/components/content/driverList'
@@ -40,11 +40,11 @@ export default new Router({
           meta: {
             requireAuth: true
           },
-          redirect: '/console/position',
+          redirect: '/console/data_report',
           children: [
             {
-              path: 'position',
-              component: positionMonitor,
+              path: 'data_report',
+              component: dataReport,
               meta: {
                 requireAuth: true
               }

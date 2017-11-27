@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "echarts": "^3.8.5",
     "element-ui": "^1.4.9",
     "json2csv": "^3.11.2",
     "node-sass": "^4.5.3",

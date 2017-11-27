@@ -7,25 +7,25 @@
           <li>
             <keep-alive>
               <router-link to="/basic/driver_list" role="button" v-cloak><i class="fa fa-diamond"></i> <span
-                class="nav-label">司机列表</span><span class="label label-warning pull-right">13</span></router-link>
+                class="nav-label">司机列表</span></router-link>
             </keep-alive>
           </li>
           <li>
             <keep-alive>
               <router-link to="/basic/car_list" role="button" v-cloak><i class="fa fa-diamond"></i> <span
-                class="nav-label">车辆列表</span><span class="label label-warning pull-right">12</span></router-link>
+                class="nav-label">车辆列表</span></router-link>
             </keep-alive>
           </li>
           <li>
             <keep-alive>
               <router-link to="/basic/property_manage" role="button" v-cloak><i class="fa fa-diamond"></i> <span
-                class="nav-label">资产管理</span><span class="label label-warning pull-right">12</span></router-link>
+                class="nav-label">资产管理</span></router-link>
             </keep-alive>
           </li>
           <li>
             <keep-alive>
               <router-link to="/basic/payment_list" role="button" v-cloak><i class="fa fa-diamond"></i> <span
-                class="nav-label">收款列表</span><span class="label label-warning pull-right">12</span></router-link>
+                class="nav-label">收款列表</span></router-link>
             </keep-alive>
           </li>
         </ul>
