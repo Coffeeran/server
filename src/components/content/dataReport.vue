@@ -45,7 +45,7 @@
     mounted () {
       this.initCarChart(2017, 0)
       this.initTicketChart()
-      this.initPaymentChart()
+      this.initPaymentChart(new Date('2016-09-01').getTime(), 0)
     },
     methods: {
       initCarChart (year, branch) {
@@ -137,7 +137,7 @@
           })
         })
       },
-      initPaymentChart () {
+      initPaymentChart (date, branch) {
         var paymentChart = echarts.init(document.getElementById('payment'), 'vintage')
         var labelTop = {
           normal: {
@@ -197,50 +197,94 @@
           },
           series: [
             {
+              name: 'weeklyAmountRatio',
               type: 'pie',
               center: ['15%', '50%'],
               radius: radius,
               x: '0%', // for funnel
               itemStyle: labelFromatter,
-              data: [
-                {name: 'other', value: 46, itemStyle: labelBottom},
-                {name: '周还款率:金额', value: 54, itemStyle: labelTop}
-              ]
+              data: []
             },
             {
+              name: 'weeklyNumberRatio',
               type: 'pie',
               center: ['35%', '50%'],
               radius: radius,
               x: '20%', // for funnel
               itemStyle: labelFromatter,
-              data: [
-                {name: 'other', value: 56, itemStyle: labelBottom},
-                {name: '周还款率:人数', value: 44, itemStyle: labelTop}
-              ]
+              data: []
             },
             {
+              name: 'monthlyAmountRatio',
               type: 'pie',
               center: ['65%', '50%'],
               radius: radius,
               x: '40%', // for funnel
               itemStyle: labelFromatter,
-              data: [
-                {name: 'other', value: 65, itemStyle: labelBottom},
-                {name: '月还款率:金额', value: 35, itemStyle: labelTop}
-              ]
+              data: []
             },
             {
+              name: 'monthlyNumberRatio',
               type: 'pie',
               center: ['85%', '50%'],
               radius: radius,
               x: '60%', // for funnel
               itemStyle: labelFromatter,
-              data: [
-                {name: 'other', value: 40, itemStyle: labelBottom},
-                {name: '月还款率:人数', value: 60, itemStyle: labelTop}
-              ]
+              data: []
             }
           ]
+        })
+        axios.get('/api/data_report/payment.do', {
+          params: {
+            date: date,
+            coModelType: 40,
+            branch: branch
+          }
+        }).then((res) => {
+          paymentChart.setOption({
+            series: [
+              {
+                name: 'weeklyAmountRatio',
+                data: [
+                  {name: 'other', value: 100 - res.data.data.amountRatio, itemStyle: labelBottom},
+                  {name: '周还款率:金额', value: res.data.data.amountRatio, itemStyle: labelTop}
+                ]
+              },
+              {
+                name: 'weeklyNumberRatio',
+                data: [
+                  {name: 'other', value: 100 - res.data.data.numberRatio, itemStyle: labelBottom},
+                  {name: '周还款率:人数', value: res.data.data.numberRatio, itemStyle: labelTop}
+                ]
+              }
+            ]
+          })
+        })
+        axios.get('/api/data_report/payment.do', {
+          params: {
+            date: date,
+            coModelType: 30,
+            branch: branch
+          }
+        }).then((res) => {
+          paymentChart.setOption({
+            series: [
+              {
+                name: 'monthlyAmountRatio',
+                data: [
+                  {name: 'other', value: 100 - res.data.data.amountRatio, itemStyle: labelBottom},
+                  {name: '月还款率:金额', value: res.data.data.amountRatio, itemStyle: labelTop}
+                ]
+              },
+              {
+                name: 'monthlyNumberRatio',
+                data: [
+                  {name: 'other', value: 100 - res.data.data.numberRatio, itemStyle: labelBottom},
+                  {name: '月还款率:人数', value: res.data.data.numberRatio, itemStyle: labelTop}
+                ]
+              }
+            ]
+          })
         })
       },
       initTicketChart () {
